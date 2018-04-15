@@ -17,7 +17,8 @@
     "javascript",
     "html",
     "jquery",
-    "css"
+    "css",
+    "InstantsearchJS"
   ],
   "author": "Quintessa, Erica, Erin",
   "license": "ISC",
@@ -28,6 +29,8 @@
   "dependencies": {
     "algoliasearch": "^3.26.0",
     "dotenv": "^5.0.1",
-    "firebase": "^4.12.1"
+    "firebase": "^4.12.1",
+    "instantsearch.js": "^2.7.1",
+    "require": "^2.4.20"
   }
 }

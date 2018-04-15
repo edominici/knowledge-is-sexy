@@ -7,32 +7,49 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"> -->
 
+        <meta charset="utf-8"/>
+
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        
         <!-- jQuery library -->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-       <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,900" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,900" rel="stylesheet">
 
+       <!-- Custom CSS -->
         <link rel="stylesheet" type="text/css" href="css/style.css">
 
+        <!-- ALGOLIA INSTANT SEARCH CSS & JS LIBRARY -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch.min.css">
+      
+        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch.js"></script>
+        
+    
+        <!-- ALGOLIA WIDGET THEME -->
+    
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch-theme-algolia.min.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        
          <!-- update the version number as needed -->
-    <script defer src="/__/firebase/4.12.1/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-messaging.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-functions.js"></script>
-    
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
-    
+        <!-- <script defer src="/__/firebase/4.12.1/firebase-app.js"></script> -->
+        <!-- include only the Firebase features as you need -->
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-messaging.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-functions.js"></script>
+        
+        <!-- initialize the SDK after all desired features are loaded -->
+        <!-- <script defer src="/__/firebase/init.js"></script> -->
+
 </head>
 
 <body>
@@ -76,6 +93,44 @@
                 <!-- <img src="assets/images/KIS.png" alt="KIS logo"> -->
                 <img class="logo" src="kis.png" alt="KIS logo">
 
+                <div id="hits">
+                        <!-- Hits widget will appear here -->
+                    </div>
+             
+                <script type='text/javascript'>
+                
+            
+    const search = instantsearch ({
+        appId: '58946AMDV8',
+        apiKey: '331c73d68fc3d1064f3f7e1bc34b5348',
+        indexName: 'questions.answers_db',
+        //You can synchronise the current search with the browser url. It provides two benefits: Working back/next browser buttons & copy and share the current search url
+        routing: true
+      });
+      
+    
+      // 🎉  Website is now connected to Algolia.
+    
+    
+    //   const search = instantsearch(options);
+    
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits',
+          hitsPerPage: 3, 
+          templates: {
+            empty: 'No results',
+            item: '<em>Hit {{objectID}}</em>: {{{_highlightResult.name.value}}}'
+          }
+        })
+      );
+    
+      console.log('hits');
+    
+      
+                </script>
+                    
+        
                 <div class="form-box">
                     <div class="card-body" id="cardQuestion">
                       The question you asked would show up here.
@@ -125,9 +180,9 @@
  <!-- FIREBASE JS -->
  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
  
- <!-- MAIN JS FILES -->
- <script src="js/main.js"></script>
- <script src="js/questions.js"></script>
+ <!-- CUSTOM JS FILES -->
+ <!-- <script src="js/main.js"></script> -->
+ <script src="js/search.js"></script>
 </body>
 
 </html>
