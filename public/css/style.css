@@ -10,6 +10,7 @@
         margin-left:10%;
         margin-right: 10%;
         text-align: center;
+        padding: 0;
     }
 
     .container {
@@ -32,6 +33,15 @@
         padding: 0;
     }
 
+    .blackRule {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #3B3C40;
+        margin: 1em 0;
+        padding: 0;
+    }
+
     .bottomRule {
         display: block;
         height: 1px;
@@ -44,6 +54,7 @@
     #questionBox {
         width: 100%;
         height: 50px;
+        padding: 10px;
         /* background-color: #D3D1D3; */
     }
 
@@ -71,9 +82,22 @@
         background-color:#5EB9DA;
         color: white;
     }
+/* a {
+    color: white;
+} */
+
+    .button-href {
+        color:white;
+    }
+    a:hover{
+        color: white;
+    }
 
     .form-box{
         text-align: center;
+    }
+    .nav-link {
+        color: #9D9EA1;
     }
 
      .nav-item {
@@ -93,80 +117,166 @@
         font-size:34px;
     }
 
+    .navbar-brand:hover {
+        color: #ED645F;
+    }
+
     .hamburger {
     background-color: grey;
     }
 
+    #questionBoxSecond {
+    margin-bottom: 30px;
+    width: 100%;
+    height: 50px;
+    }
 
-        #questionBoxSecond {
-            margin-bottom: 30px;
-            width: 100%;
-            height: 50px;
-        }
-        .card {
-            margin-bottom: 15px;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 14px;
-            background-color: #8CCEE4;
-            max-width: 100%;
-            height: auto;
-        }
+    .cardBlack {
+        color: white;
+        background-color: #3B3C40;
+        padding: 15px;
+        border-radius: 3px;
+    }
 
-        #cardRed {
-            color:white;
-            background-color: #ED645F;
-            padding: 15px;
-            border-radius: 3px;
-            height: auto;
-        }
 
-        #cardBlue {
-            color: white;
-            background-color:#5EB9DA;
-            padding: 15px;
-            border-radius: 3px;
-        }
+    #submitQuestionsButton, #searchAgainButton, #notSeeingYourQuestionButton{
+        margin-top: 15px;
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: .5px;
+        font-size: 15px;
+        border:0;
+        border-radius: 0;
+        color: white;
+        background-color: #9D9EA1;
+        border-radius: 2px;
+    }
 
-        #cardBlack {
-            color: white;
+    #searchAgainButton, #notSeeingYourQuestionButton {
+        margin-top: 15px;
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: .5px;
+        font-size: 15px;
+        border:0;
+        border-radius: 0;
+        color: white;
+        background-color: #ED645F;
+        border-radius: 2px;
+    }
+
+    #searchAgainButton:hover, #notSeeingYourQuestionButton:hover {
+        margin-top: 15px;
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: .5px;
+        font-size: 15px;
+        border:0;
+        border-radius: 0;
+        color: white;
+        background-color: #5EB9DA;
+        border-radius: 2px;
+    }
+
+    #submitQuestionsButton:hover {
+        background-color:#5EB9DA;
+        color: white;
+    }
+
+    #cardQuestion {
+        background-color: #9D9EA1;
+        color: white;
+        margin-bottom: 35px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        width: 100%;
+        height: 50px;
+        padding: 15px;
+        border-radius: 2px;
+        font-weight: 700;
+    }
+
+    .blackRule {
+        color: #3B3C40;
+        height: 1px;
+
+    }
+
+    placeholder {
+        text-align: center;
+    }
+
+    .card-img-top {
+        float:left;
+        width: 100px;
+        margin-bottom: 20px;
+        margin-right: 20px;
+        border-radius: 3px;
+        vertical-align: center;
+        margin-top: 0;
+    }
+
+    .card {
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+        background-color: #3B3C40;
+        color: white;
+        border-radius: 3px;
+        margin-bottom: 20px;
+        height: 140px;
+        /* width: 500px; */
+        width:32em;
+    }
+
+    .card-question {
+            text-align: center;
             background-color: #3B3C40;
-            padding: 15px;
+            color: white;
             border-radius: 3px;
+            margin-bottom: 20px;
         }
 
+    .card-title {
+        font-size: 18px;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #ED645F;
+    }
+    .card-body {
+        width: 100%;
+    }
 
-        #submitQuestionsButton {
-            margin-top: 15px;
-            font-family: 'Open Sans', sans-serif;
-            letter-spacing: .5px;
-            font-size: 15px;
-            border:0;
-            border-radius: 0;
-            color: white;
-            background-color: #9D9EA1;
-            border-radius: 2px;
-        }
+    h3 {
+        color: #3B3C40;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 300;
+        font-size:34px;
+    }
 
-        #submitQuestionsButton:hover {
-            background-color:#5EB9DA;
-            color: white;
-        }
+    .card-text {
+    font-family: 'Open Sans', sans-serif;
+    letter-spacing: .5px;
+    }
 
-        #cardQuestion {
-            background-color: #9D9EA1;
-            color: white;
-            margin-bottom: 35px;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 14px;
-            width: 100%;
-            height: 50px;
-            padding: 15px;
-            border-radius: 2px;
-            font-weight: 700;
-        }
+    .aboutText, .resource-link {
+        color: #9D9EA1;
+        text-align: center;
+        margin-top: 10px;
+        padding: 5px;
 
-        .blackRule {
-            color: #3B3C40;
-            height: 1px;
+    }
+    .resourceLink:hover {
+        color: #ED645F;
+    }
 
-        }
+    .resource-link {
+        color:#5EB9DA;
+    }
+
+    .resource-link:hover {
+        color:#ED645F;
+    }
+
+
+    .resourceText {
+        color:#3B3C40;
+    }
