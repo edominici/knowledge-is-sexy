@@ -6,22 +6,34 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"> -->
 
+    <meta charset="utf-8"/>
+
     <!-- Latest compiled and minified CSS -->
-
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,900" rel="stylesheet">
     
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <!-- update the version number as needed -->
+    <!-- ALGOLIA INSTANT SEARCH CSS & JS LIBRARY -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch.js"></script>
+
+     <!-- ALGOLIA WIDGET THEME -->
+    
+     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch-theme-algolia.min.css">
+     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- include only the Firebase features as you need -->
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
@@ -75,6 +87,7 @@
         <div class="row justify-content-md-center">
             <!-- <div class="col col-lg-2">
             </div> -->
+            
             <div class="col-md-auto" id="contentDiv">
                 <img class="logo" src="kis.png" alt="KIS logo">
                 <hr class="topRule">
@@ -82,9 +95,10 @@
                 <hr class="bottomRule">
                 <p class="askQuestion"> Ask any sex or sexual health questions here.</p>
                 <div class="form-box">
+                     
                     <form action="/" method="POST">
                         <textarea type="text" id="questionBox" placeholder="First name"></textarea> <br>
-                        <button type="button" class="btn btn-outline-secondary" id="submitButton"><a href ="askquestions.html">SUBMIT</a></button>
+                        <button type="button" class="btn btn-outline-secondary" id="submitButton"><a href="askquestions.html">SUBMIT</a></button>
                     </form>
                 </div>
             </div>
@@ -93,6 +107,85 @@
      
     </div>
 
+    <script type='text/javascript'>
+
+    // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBLXtC4nDv-yxymc0nI2uc3ugTUi4PvUco",
+    authDomain: "knowledgeispower-560e2.firebaseapp.com",
+    databaseURL: "https://knowledgeispower-560e2.firebaseio.com",
+    projectId: "knowledgeispower-560e2",
+    storageBucket: "knowledgeispower-560e2.appspot.com",
+    messagingSenderId: "349167488894"
+  };
+  
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var dataRef = firebase.database();
+
+$("#submitButton").on("click", function (event) {
+        console.log('submit')
+        
+        
+            event.preventDefault();
+        
+            var questionSearch = $("#questionBox").val().trim();
+       
+            var newEntry = {
+              search: questionSearch,
+              dataAdded: firebase.database.ServerValue.TIMESTAMP
+            }
+
+            console.log(newEntry);
+        
+            dataRef.ref().push(newEntry);
+        
+            //Logs everything to console
+            console.log(newEntry.search);
+
+            $("#questionBox").val("");
+
+    dataRef.ref().on("child_added", function (childSnapshot) {
+    
+         console.log(childSnapshot.val());
+                
+        var questionSearch = childSnapshot.val().search;
+
+        console.log(questionSearch);
+
+        $("#card-question").append(questionSearch);
+
+    });
+
+    window.location = 'askquestions.html';
+
+    });
+
+                
+const search = instantsearch ({
+        appId: '58946AMDV8',
+        apiKey: '331c73d68fc3d1064f3f7e1bc34b5348',
+        indexName: 'questions.answers_db',
+        //You can synchronise the current search with the browser url. It provides two benefits: Working back/next browser buttons & copy and share the current search url
+        routing: true
+      });
+      
+
+    // initialize SearchBox
+    search.addWidget(
+      instantsearch.widgets.searchBox({
+        container: '#questionBox',
+        placeholder: 'Search by answer or keyword'
+      })
+    );
+  
+    console.log('search box');
+  
+    search.start();   
+    
+  </script>
+
  <!-- ALGOLIA SEARCH LIBRARY -->
  <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.26.0/algoliasearch.jquery.min.js"></script>
@@ -100,8 +193,8 @@
  <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
  
  <!-- MAIN JS -->
- <script src="js/main.js"></script>
- <script src="js/questions.js"></script>
+ <!-- <script src="js/main.js"></script> -->
+ 
 
 </body>
 </html>

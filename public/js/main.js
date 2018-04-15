@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    console.log("hello");
+
+    console.log("hello main");
     
   // Initialize Firebase
   var config = {
@@ -16,12 +17,51 @@ $(document).ready(function () {
     // Get a reference to the database service
     var dataRef = firebase.database();
 
-    var client = algoliasearch('58946AMDV8', '331c73d68fc3d1064f3f7e1bc34b5348');
-    var index1 = client.initIndex('questions_db');
+    // var client = algoliasearch('58946AMDV8', '331c73d68fc3d1064f3f7e1bc34b5348');
+    // var index1 = client.initIndex('questions_db');
     // var index2 = client.initIndex('tags');
 
+    const search = instantsearch ({
+        appId: '58946AMDV8',
+        apiKey: '331c73d68fc3d1064f3f7e1bc34b5348',
+        indexName: 'questions.answers_db',
+        //You can synchronise the current search with the browser url. It provides two benefits: Working back/next browser buttons & copy and share the current search url
+        routing: true
+      });
+      
+    
+      // 🎉  Website is now connected to Algolia.
+    
+    
+    //   const search = instantsearch(options);
+    
+      search.addWidget(
+        instantsearch.widgets.hits({
+          container: '#hits',
+          hitsPerPage: 3, 
+          templates: {
+            empty: 'No results',
+            item: '<em>Hit {{objectID}}</em>: {{{_highlightResult.name.value}}}'
+          }
+        })
+      );
+    
+      console.log('hits');
+    
+      // initialize SearchBox
+      search.addWidget(
+        instantsearch.widgets.searchBox({
+          container: '#questionBox',
+          placeholder: 'Search by answer or keyword'
+        })
+      );
+    
+      console.log('search box');
+    
+      search.start();
+
     $("#submitButton").on("click", function (event) {
-        console.log()
+        console.log('submit')
         
         
             event.preventDefault();
