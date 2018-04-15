@@ -136,10 +136,11 @@
         background-color: #3B3C40;
         padding: 15px;
         border-radius: 3px;
+        /* height:200px; */
     }
 
 
-    #submitQuestionsButton, #searchAgainButton, #notSeeingYourQuestionButton{
+    /* #submitQuestionsButton, #searchAgainButton, #notSeeingYourQuestionButton{
         margin-top: 15px;
         font-family: 'Open Sans', sans-serif;
         letter-spacing: .5px;
@@ -149,18 +150,17 @@
         color: white;
         background-color: #9D9EA1;
         border-radius: 2px;
-    }
+    } */
 
-    #searchAgainButton, #notSeeingYourQuestionButton {
+    #notSeeingYourQuestionButton, #submitQuestionsButton {
         margin-top: 15px;
         font-family: 'Open Sans', sans-serif;
         letter-spacing: .5px;
         font-size: 15px;
         border:0;
-        border-radius: 0;
+        border-radius: 3;
         color: white;
-        background-color: #ED645F;
-        border-radius: 2px;
+        background-color: #ED645F !important;
     }
 
     #searchAgainButton:hover, #notSeeingYourQuestionButton:hover {
@@ -169,10 +169,21 @@
         letter-spacing: .5px;
         font-size: 15px;
         border:0;
-        border-radius: 0;
         color: white;
-        background-color: #5EB9DA;
+        background-color: #5EB9DA !important;
         border-radius: 2px;
+    }
+
+    #searchAgainButton {
+        margin-top: 15px;
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: .5px;
+        font-size: 15px;
+        border:0;
+        border-radius: 3;
+        color: white;
+        background-color: #ED645F !important;
+
     }
 
     #submitQuestionsButton:hover {
@@ -185,12 +196,13 @@
         color: white;
         margin-bottom: 35px;
         font-family: 'Open Sans', sans-serif;
-        font-size: 14px;
+        font-size: 15px;
         width: 100%;
         height: 50px;
         padding: 15px;
         border-radius: 2px;
         font-weight: 700;
+         : .25px;
     }
 
     .blackRule {
@@ -243,6 +255,9 @@
     }
     .card-body {
         width: 100%;
+        font-size: 15px;
+        letter-spacing: .25px;
+
     }
 
     h3 {
@@ -254,7 +269,7 @@
 
     .card-text {
     font-family: 'Open Sans', sans-serif;
-    letter-spacing: .5px;
+    letter-spacing: .25px;
     }
 
     .aboutText, .resource-link {
@@ -262,6 +277,7 @@
         text-align: center;
         margin-top: 10px;
         padding: 5px;
+        font-size: 15px;
 
     }
     .resourceLink:hover {
@@ -279,4 +295,32 @@
 
     .resourceText {
         color:#3B3C40;
+    }
+
+    .modal-title {
+        font-family: 'Raleway', sans-serif;
+        font-weight: 300;
+        font-size:24px;
+        text-align: center;
+        color:#ED645F;
+
+    }
+
+    .modal {
+        margin-top: 160px;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    .modal-button {
+        color:#5EB9DA;
+    }
+
+    .modal-button:hover {
+        color:#ED645F;
+    }
+
+    .modal-text {
+        text-align: center;
+        padding: 10px;
     }
