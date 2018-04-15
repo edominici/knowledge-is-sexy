@@ -21,6 +21,7 @@ $(document).ready(function () {
     // var index2 = client.initIndex('tags');
 
     $("#submitButton").on("click", function (event) {
+        console.log()
         
         
             event.preventDefault();
@@ -38,6 +39,8 @@ $(document).ready(function () {
         
             //Logs everything to console
             console.log(newEntry.search);
+
+            $("#questionBox").val("");
 
     dataRef.ref().on("child_added", function (childSnapshot) {
     
