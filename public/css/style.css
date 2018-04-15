@@ -1,0 +1,172 @@
+
+    h2 {
+        font-family: 'Raleway', sans-serif;
+        font-weight: 300;
+        color: #3B3C40;
+        text-align: center;
+    }
+
+    #contentDiv {
+        margin-left:10%;
+        margin-right: 10%;
+        text-align: center;
+    }
+
+    .container {
+    text-align: center;
+    padding: 0;
+    }
+
+    .logo {
+        width: 140px;
+        margin-bottom: 80px;
+        margin-top: 40px;
+    }
+
+    .topRule {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #ED645F;
+        margin: 1em 0;
+        padding: 0;
+    }
+
+    .bottomRule {
+        display: block;
+        height: 1px;
+        border: 0;
+        border-top: 1px solid #5EB9DA;
+        margin: 1em 0;
+        padding: 0;
+    }
+
+    #questionBox {
+        width: 100%;
+        height: 50px;
+        /* background-color: #D3D1D3; */
+    }
+
+    .askQuestion {
+        font-family: 'Open Sans', sans-serif;
+        color: #9D9EA1;
+        font-size: 13px;
+        margin-top: 30px;
+    }
+
+    #submitButton {
+        margin-top: 15px;
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: .5px;
+        font-size: 15px;
+        border:0;
+        border-radius: 0;
+        color: white;
+        background-color: #ED645F;
+        border-radius: 2px;
+
+    }
+
+    #submitButton:hover {
+        background-color:#5EB9DA;
+        color: white;
+    }
+
+    .form-box{
+        text-align: center;
+    }
+
+     .nav-item {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 13px;
+        color:red !important;
+    }
+
+    .nav-link:hover {
+        color: #ED645F;
+    }
+
+    .navbar-brand {
+        color: #5EB9DA;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 900;
+        font-size:34px;
+    }
+
+    .hamburger {
+    background-color: grey;
+    }
+
+
+        #questionBoxSecond {
+            margin-bottom: 30px;
+            width: 100%;
+            height: 50px;
+        }
+        .card {
+            margin-bottom: 15px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            background-color: #8CCEE4;
+            max-width: 100%;
+            height: auto;
+        }
+
+        #cardRed {
+            color:white;
+            background-color: #ED645F;
+            padding: 15px;
+            border-radius: 3px;
+            height: auto;
+        }
+
+        #cardBlue {
+            color: white;
+            background-color:#5EB9DA;
+            padding: 15px;
+            border-radius: 3px;
+        }
+
+        #cardBlack {
+            color: white;
+            background-color: #3B3C40;
+            padding: 15px;
+            border-radius: 3px;
+        }
+
+
+        #submitQuestionsButton {
+            margin-top: 15px;
+            font-family: 'Open Sans', sans-serif;
+            letter-spacing: .5px;
+            font-size: 15px;
+            border:0;
+            border-radius: 0;
+            color: white;
+            background-color: #9D9EA1;
+            border-radius: 2px;
+        }
+
+        #submitQuestionsButton:hover {
+            background-color:#5EB9DA;
+            color: white;
+        }
+
+        #cardQuestion {
+            background-color: #9D9EA1;
+            color: white;
+            margin-bottom: 35px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px;
+            width: 100%;
+            height: 50px;
+            padding: 15px;
+            border-radius: 2px;
+            font-weight: 700;
+        }
+
+        .blackRule {
+            color: #3B3C40;
+            height: 1px;
+
+        }
