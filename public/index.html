@@ -1,0 +1,107 @@
+<!DOCTYPE html:5>
+<html>
+
+<head>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"> -->
+
+    <!-- Latest compiled and minified CSS -->
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,900" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <!-- update the version number as needed -->
+    <!-- include only the Firebase features as you need -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-functions.js"></script>
+    
+    <!-- initialize the SDK after all desired features are loaded -->
+    <!-- <script defer src="/__/firebase/init.js"></script> -->
+
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">KIS</a>
+      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> -->
+        <!-- <span class="navbar-toggler-icon"></span> -->
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar hamburger" ></span>
+        <span class="icon-bar hamburger"></span>
+        <span class="icon-bar hamburger"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">#ASKQUESTIONS <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">POPULAR QUESTIONS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">CONTRIBUTE</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">RESOURCES</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">PROFILE</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <!-- <div class="col col-lg-2">
+            </div> -->
+            <div class="col-md-auto" id="contentDiv">
+                <img class="logo" src="kis.png" alt="KIS logo">
+                <hr class="topRule">
+                <h2>Knowledge is sexy.</h2>
+                <hr class="bottomRule">
+                <p class="askQuestion"> Ask any sex or sexual health questions here.</p>
+                <div class="form-box">
+                    <form action="/" method="POST">
+                        <textarea type="text" id="questionBox" placeholder="First name"></textarea> <br>
+                        <button type="button" class="btn btn-outline-secondary" id="submitButton"><a href ="askquestions.html">SUBMIT</a></button>
+                    </form>
+                </div>
+            </div>
+      
+        </div>
+     
+    </div>
+
+ <!-- ALGOLIA SEARCH LIBRARY -->
+ <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.26.0/algoliasearch.jquery.min.js"></script>
+ <!-- FIREBASE JS -->
+ <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+ 
+ <!-- MAIN JS -->
+ <script src="js/main.js"></script>
+ <script src="js/questions.js"></script>
+
+</body>
+</html>
