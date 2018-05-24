@@ -17,13 +17,18 @@ class App extends React.Component {
 
         <div className='content'>
 
-          <h2 className="content-text"><span className="content-text-accent">Ask</span>&nbsp;any sex or sexual health questions here.</h2>
+          <h2 className='content-text'><span className='content-text-accent'>Ask</span>&nbsp;any sex or sexual health questions here.</h2>
           <div className='search-bar-container'>
-            <input type='search' className='search-bar'/>
-            <button className='search-bar-submit' onClick={this.handleSearchSubmit}>Ask</button>
+            <input type='search' className='search-bar' placeholder='#AskQuestions'/>
+            <button className='search-bar-submit-button' onClick={this.handleSearchSubmit}>Ask</button>
           </div>
-          <h3>or</h3>
-          <h2 className="content-text"><span className="content-text-accent">Browse</span>&nbsp;questions that other people have asked.</h2>
+          <div className='divider'>
+            <div className='divider-line'/>
+            <div className='divider-text'>
+              or
+            </div>
+          </div>
+          <h2 className='content-text'><span className='content-text-accent'>Browse</span>&nbsp;questions that other people have asked.</h2>
 
         </div>
       </div>

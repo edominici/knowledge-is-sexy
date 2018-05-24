@@ -29,7 +29,7 @@
 .App-title {
   margin: 0.5em 0;
   font-size: 160%;
-  font-weight: 700;
+  font-weight: 900;
   color: #46b7f1; }
 
 .App-title-accent {
@@ -50,4 +50,56 @@
 .content-text {
   font-size: 100%;
   font-weight: 400;
-  color: #555; }
+  color: #9d9d9d; }
+
+.content-text-accent {
+  font-weight: 700; }
+
+.divider {
+  margin: 0 auto;
+  margin-top: 2em;
+  margin-bottom: 1em; }
+
+.divider-line {
+  margin: 0 auto;
+  height: 1px;
+  width: 40vw;
+  max-width: 300px;
+  border-bottom: 1px solid #aaa; }
+
+.divider-text {
+  width: 2em;
+  height: 2em;
+  margin: 0 auto;
+  margin-top: -12px;
+  background: #fcfdfe; }
+
+.search-bar-container {
+  width: 85vw;
+  max-width: 400px;
+  height: 35px;
+  line-height: 1.25em;
+  margin: 0 auto;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  display: flex;
+  flex-direction: row; }
+
+.search-bar {
+  font-size: 1em;
+  padding: 6px;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #aaa;
+  flex: 1 0 auto; }
+  .search-bar ::placeholder {
+    color: #9d9d9d; }
+
+.search-bar-submit-button {
+  font-size: 1.15em;
+  background-color: #ed5750;
+  border-radius: 0 4px 4px 0;
+  border: none;
+  color: #fefefe;
+  font-weight: 900;
+  flex: 0 0 60px; }
