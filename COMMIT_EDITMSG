@@ -1,1 +1,5 @@
-Style search bar on landing page
+Set up react-router
+
+* Move landing page code from App.tsx to own module
+* Rewrite App.tsx to handle routing
+
