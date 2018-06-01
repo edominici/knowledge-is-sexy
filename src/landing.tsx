@@ -6,7 +6,7 @@ import logo from './shared/images/kis-logo.svg';
 export class Landing extends React.Component {
   public render() {
     return (
-      <div className='landing'>
+      <div className='page'>
         <header className='landing-header'>
           <div className='landing-logo-container'>
             <div className='landing-title'>Knowledge Is&nbsp;<span className='landing-title-accent'>Sexy.</span></div>

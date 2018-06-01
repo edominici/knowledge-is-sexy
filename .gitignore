@@ -24,3 +24,6 @@ yarn-error.log*
 
 # while we're using sass, exclude processed .css files from vcs
 src/**/*.css
+
+# project editor config file
+.vimlocal

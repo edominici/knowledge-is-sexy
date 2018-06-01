@@ -1,6 +1,6 @@
-@import "src/shared/styles/variables";
+@import 'src/shared/styles/variables';
 
-.landing {
+.page {
   text-align: center;
   height: 100vh;
   width: 100vw;
@@ -8,7 +8,7 @@
 }
 
 .landing-header {
-  background: url("./shared/images/tiling-question-bg.svg");
+  background: url('./shared/images/tiling-question-bg.svg');
   background-size: 50px;
   height: 45vh;
   padding: 20px;
