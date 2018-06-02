@@ -16,8 +16,14 @@ $question-container-height: 20vh;
   padding: 20px;
 
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.question {
+  display: flex;
   flex-direction: row;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-end;
 }
 
 .answers-container {
@@ -26,9 +32,14 @@ $question-container-height: 20vh;
   
   display: flex;
   flex-direction: column;
+  justify-content: flex;
+  align-items: flex-end;
+}
+.answer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   justify-content: flex-start;
-  align-items: stretch;
-
 }
 
 .speech-bubble {
@@ -48,7 +59,7 @@ $question-container-height: 20vh;
   width: 0;
   z-index: 1;
   margin-top: -10px;
-  bottom: 16px;
+  top: 20px;
   right: -16px;
 }
 
@@ -72,4 +83,18 @@ $question-container-height: 20vh;
   border-width: 10px 16px 10px 0;
 }
 
+.user-icon {
+  width: 2.5em;
+}
+
+.user-icon.asker {
+  fill: $col-app-accent-light;
+  order: 1;
+  margin-left: 15px;
+}
+
+.user-icon.answerer {
+  fill: $col-app-base;
+  margin-right: 15px;
+}
 
