@@ -13,33 +13,39 @@ $question-container-height: 20vh;
   background: url('./shared/images/tiling-question-bg.svg');
   background-size: 50px;
   height: $question-container-height;
-  padding: 20px;
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-end;
 }
 .question {
+  margin: 10px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: flex-end;
 }
 
-.answers-container {
+.answer-list-container {
+  width: 100%;
   height: 100vh - $question-container-height;
-  padding: 20px;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: flex;
-  align-items: flex-end;
+  overflow-y: scroll; 
 }
+
+.answer-list {
+  width: 100%;
+  height: auto;
+}
+
 .answer {
+  max-width: 100%;
+
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
+  margin: 1em 0.5em;
 }
 
 .speech-bubble {
@@ -59,41 +65,41 @@ $question-container-height: 20vh;
   width: 0;
   z-index: 1;
   margin-top: -10px;
-  top: 20px;
   right: -16px;
 }
 
-.speech-bubble.question {
+.speech-bubble-question {
   color: $col-text-white;
   background-color: $col-app-accent;
 }
-.speech-bubble.question:after {
+.speech-bubble-question:after {
+  bottom: 10px;
   right: -16px;
   border-color: transparent $col-app-accent;
   border-width: 10px 0 10px 16px;
 }
 
-.speech-bubble.answer {
+.speech-bubble-answer {
   color: $col-text-black;
   background-color: $col-app-base-light;
 }
-.speech-bubble.answer:after {
+.speech-bubble-answer:after {
+  top: 20px;
   left: -16px;
   border-color: transparent $col-app-base-light;
   border-width: 10px 16px 10px 0;
 }
 
 .user-icon {
-  width: 2.5em;
 }
 
-.user-icon.asker {
+.user-icon-asker {
   fill: $col-app-accent-light;
   order: 1;
   margin-left: 15px;
 }
 
-.user-icon.answerer {
+.user-icon-answerer {
   fill: $col-app-base;
   margin-right: 15px;
 }

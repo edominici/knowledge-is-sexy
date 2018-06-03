@@ -1,2 +1,5 @@
-Add user icons to question page
+Add style fixes to question page
+
+* had mistakenly applied .question css class to unrelated elements
+* widened area underneath user icon to allow more space for username
 
