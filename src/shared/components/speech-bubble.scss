@@ -4,8 +4,14 @@
   position: relative;
   padding: 0.75em;
   width: 85%;
+  min-height: 4em;
   height: auto;
   border-radius: 10px;
+
+  // center text
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .speech-bubble:after {
