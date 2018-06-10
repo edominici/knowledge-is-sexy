@@ -7,8 +7,7 @@
     ]
   },
   "rules": {
-    "interface-name": [true, "never-prefix"],
-    "no-console": [false],
+    "interface-name": [true, "never-prefix"]
     "quotemark": [true, "single", "avoid-escape"]
   }
 }
