@@ -9,10 +9,10 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path='/' component={QuestionBrowse} />
         <Route path='/landing' component={Landing} />
         <Route path='/question' component={Question} />
         <Route path='/question-browse' component={QuestionBrowse} />
+        <Route path='/' exact={true} component={QuestionBrowse} />
       </Switch>
     </BrowserRouter>
   );
