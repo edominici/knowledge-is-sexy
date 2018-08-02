@@ -16,7 +16,7 @@ export class Landing extends React.Component {
 
         <div className='content'>
 
-          <h2 className='content-text'><span className='content-text-accent'>Ask</span>&nbsp;any sex or sexual health questions here.</h2>
+          <h2 className='content-text'><span className='content-text-accent'>Ask</span>&nbsp;any sex or sexual health question here.</h2>
           <div className='search-bar-container'>
             <input type='search' className='search-bar' placeholder='#AskQuestions'/>
             <button className='search-bar-submit-button' onClick={this.handleSearchSubmit}>Ask</button>
@@ -27,7 +27,7 @@ export class Landing extends React.Component {
               or
             </div>
           </div>
-          <h2 className='content-text'><span className='content-text-accent'>Browse</span>&nbsp;questions that other people have asked.</h2>
+          <h2 className='content-text'><span className='content-text-accent'>Browse</span>&nbsp;the&nbsp;<span className='content-text-accent'>most popular</span>&nbsp;questions from other people.</h2>
 
         </div>
       </div>
