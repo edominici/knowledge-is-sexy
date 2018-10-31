@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { SpeechBubble } from 'src/shared/components';
+import { SpeechBubble } from './shared/components';
 
 import './question-browse.css';
 

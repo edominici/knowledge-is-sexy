@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { SpeechBubble, UserIcon } from 'src/shared/components';
+import { SpeechBubble, UserIcon } from './shared/components';
 
 import './question.css';
 
