@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { SpeechBubble, UserIcon } from './shared/components';
 
-import './question.css';
+import './question.scss';
 
 
 export class Question extends React.Component {

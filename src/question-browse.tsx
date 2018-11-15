@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { SpeechBubble } from './shared/components';
 
-import './question-browse.css';
+import './question-browse.scss';
 
 export const QuestionBrowse: React.SFC<any> = (props) => {
 

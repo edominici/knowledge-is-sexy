@@ -5,7 +5,7 @@ interface SpeechBubbleProps {
   text: string
 }
 
-import './speech-bubble.css';
+import './speech-bubble.scss';
 
 export const SpeechBubble: React.SFC<SpeechBubbleProps> = (props) => {
   let className = 'speech-bubble';

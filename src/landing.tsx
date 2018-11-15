@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './landing.css';
+import './landing.scss';
 
 import logo from './shared/images/kis-logo.svg';
 
