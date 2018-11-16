@@ -14,7 +14,7 @@ export class Landing extends React.Component {
           </div>
         </header>
 
-        <div className='content'>
+        <div className='landing-content'>
 
           <div className='content-text'>
             <span className='content-text-accent'>Ask questions</span> about sex.
@@ -31,8 +31,17 @@ export class Landing extends React.Component {
               or
             </div>
           </div>
-          <h2 className='content-text'><span className='content-text-accent'>Browse</span>&nbsp;the&nbsp;<span className='content-text-accent'>most popular</span>&nbsp;questions from other people.</h2>
-
+          <div className='content-text'>
+            See what other people are asking.
+          </div>
+          <div className='landing-carousel-container'>
+            <button className='landing-carousel-change-button'>&lt;</button>
+            { /* Carousel goes here */ }
+            <button className='landing-carousel-change-button'>&gt;</button>
+          </div>
+          <button className='browse-questions-button'>
+            Browse questions
+          </button>
         </div>
       </div>
     );
