@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Carousel from 'nuka-carousel';
+import { SpeechBubble } from '../src/shared/components/speech-bubble';
 import './landing.scss';
 
 import logo from './shared/images/kis-logo.svg';
@@ -35,9 +37,48 @@ export class Landing extends React.Component {
             See what other people are asking.
           </div>
           <div className='landing-carousel-container'>
-            <button className='landing-carousel-change-button'>&lt;</button>
-            { /* Carousel goes here */ }
-            <button className='landing-carousel-change-button'>&gt;</button>
+            <Carousel
+              slideWidth={1.0}
+              initialSlideHeight={200}
+              wrapAround={true}
+              renderCenterLeftControls={({ previousSlide }: any) => {
+                return <button onClick={previousSlide} className='landing-carousel-control'>&lt;</button>
+              }}
+              renderCenterRightControls={({ nextSlide }: any) => {
+                return <button onClick={nextSlide} className='landing-carousel-control'>&gt;</button>
+              }}
+            >
+              <div className="speech-bubble-container">
+                <SpeechBubble
+                  type={'question'}
+                  text={'test text'}
+                />
+              </div>
+              <div className="speech-bubble-container">
+                <SpeechBubble
+                  type={'question'}
+                  text={'test text'}
+                />
+              </div>
+              <div className="speech-bubble-container">
+                <SpeechBubble
+                  type={'question'}
+                  text={'test text'}
+                />
+              </div>
+              <div className="speech-bubble-container">
+                <SpeechBubble
+                  type={'question'}
+                  text={'test text'}
+                />
+              </div>
+              <div className="speech-bubble-container">
+                <SpeechBubble
+                  type={'question'}
+                  text={'test text'}
+                />
+              </div>
+            </Carousel>
           </div>
           <button className='browse-questions-button'>
             Browse questions

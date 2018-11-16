@@ -163,7 +163,7 @@
   align-items: center;
 }
 
-.landing-carousel-change-button {
+.landing-carousel-control {
   background: none;
   border: none;
   font-size: 200%;
@@ -171,6 +171,11 @@
   color: $col-app-gray;
   height: 40px;
   width: 40px;
+}
+
+.speech-bubble-container {
+  margin: 0 auto;
+  width: 200px;
 }
 
 .browse-questions-button {
@@ -182,4 +187,10 @@
   background: none;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
+}
+
+// override nuka-carousel css so that 
+// carousel takes up full space
+.landing-carousel-container .slider {
+  height: 100% !important;
 }
