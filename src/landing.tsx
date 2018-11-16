@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Carousel from 'nuka-carousel';
-import { SpeechBubble } from '../src/shared/components/speech-bubble';
+
+import { SpeechBubble } from './shared/components/speech-bubble';
+import { SearchBar } from './shared/components'
+import logo from './shared/images/kis-logo.svg';
 import './landing.scss';
 
-import logo from './shared/images/kis-logo.svg';
 
 export class Landing extends React.Component {
   public render() {
@@ -23,10 +25,11 @@ export class Landing extends React.Component {
             <br />
             Get answers from <span className='content-text-accent'> the experts</span>
           </div>
-          <div className='search-bar-container'>
-            <input type='search' className='search-bar' placeholder='#AskQuestions'/>
-              <button className='search-bar-submit-button' onClick={this.handleSearchSubmit}>Ask</button>
+
+          <div className='landing-search-bar-container'>
+            <SearchBar onSubmit={this.handleSearchSubmit} />
           </div>
+
           <div className='divider'>
             <div className='divider-line'/>
             <div className='divider-text'>

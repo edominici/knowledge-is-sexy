@@ -11,6 +11,7 @@ $box-shadow-z5: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
  * Colors
  **/
 $col-app-base: #46b7f1;
+$col-app-base-dark: darken($col-app-base, 10%);
 $col-app-base-light: #eaf4f8;
 $col-app-accent: #ed5750;
 $col-app-accent-light: #f39792;
@@ -19,8 +20,10 @@ $col-app-neutral: #fcfdfe;
 
 $col-app-gray: #aaa;
 $col-app-gray-light: lighten($col-app-gray, 5%);
+$col-app-gray-lighter: lighten($col-app-gray, 15%);
+$col-app-gray-lightest: lighten($col-app-gray, 25%);
 $col-app-gray-dark: #555;
 
 $col-text-black: #000;
-$col-text-gray: darken($col-app-gray, 20%);
+$col-text-gray: darken($col-app-gray, 30%);
 $col-text-white: #fefefe;
