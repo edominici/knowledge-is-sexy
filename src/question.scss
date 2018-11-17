@@ -7,8 +7,6 @@ $question-container-height: 20vh;
   background-color: $col-app-base;
 }
 .question-container {
-  background: url('./shared/images/tiling-question-bg.svg');
-  background-size: 50px;
   height: $question-container-height;
 
   display: flex;
@@ -16,7 +14,6 @@ $question-container-height: 20vh;
   justify-content: center;
   align-items: flex-end;
 
-  box-shadow: $box-shadow-z2;
 }
 .question {
   margin: 10px;
