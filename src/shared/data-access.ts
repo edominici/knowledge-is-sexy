@@ -1,7 +1,8 @@
-import { Question } from '../../src/shared/types';
 import algoliasearch from 'algoliasearch';
 import { parse } from 'papaparse';
 
+import { Question } from '../shared/types';
+import { QuestionCategory } from '../shared/enums'
 
 /**
  * DataAccess is a singleton class that contains methods for accessing 
@@ -33,7 +34,7 @@ export class DataAccess {
     });
   }
 
-  public static getQuestionsInCategory = (category: string): Promise<Question[]> => {
+  public static getQuestionsInCategory = (category: QuestionCategory): Promise<Question[]> => {
     const isInCategory = (q: Question) => q.categories.indexOf(category) !== -1;
     return new Promise( (resolve, reject) => {
       DataAccess.awaitQuestionsLoaded().then( questions => {
