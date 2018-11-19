@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/algoliasearch": "^3.30.1",
     "@types/react-router-dom": "^4.2.6",
+    "algoliasearch": "^3.30.0",
     "node-sass": "^4.10.0",
     "nuka-carousel": "^4.4.2",
     "papaparse": "^4.6.2",

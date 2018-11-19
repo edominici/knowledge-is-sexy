@@ -19,6 +19,24 @@ $question-search-header-height: 10vh;
   width: 85vw;
 }
 
+.question-back-bar-container {
+  background-color: $col-app-gray-lightest;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: flex-start;
+  box-shadow: $box-shadow-z1;
+}
+.question-back-button {
+  background-color: $col-app-gray-lightest;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  font-size: 1em;
+  color: blue;
+}
+
 .question-list-scroll-container {
   background-color: $col-app-neutral;
   width: 100%;
@@ -87,6 +105,30 @@ $question-search-header-height: 10vh;
 .question-list-element .body-text {
   color: $col-text-gray;
   flex: 1 1 auto;
+}
+
+.question-list-tail {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid $col-app-gray;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+}
+
+.more-questions-button {
+  padding: 0.3em;
+  font-size: 120%;
+  border: 2px solid $col-app-accent;
+  color: $col-app-accent;
+  border-radius: 10px;
+  background: none;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .question-list-footer {
