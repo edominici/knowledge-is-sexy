@@ -13,16 +13,6 @@ import { QuestionCategory } from '../shared/enums'
  */
 export class DataAccess {
 
-
-  public static getInstance() {
-    if (!DataAccess.instance) {
-      // create the singleton instance
-      DataAccess.instance = new DataAccess();
-      DataAccess.loadAllQuestions();
-    }
-    return DataAccess.instance;
-  }
-
   public static QuestionsNotLoadedError: Error = new Error('Questions not loaded!');
 
   public static getPopularQuestions = (count: number): Promise<Question[]> => {

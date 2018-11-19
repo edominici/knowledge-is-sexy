@@ -1,5 +1,4 @@
-Connect landing and question-search to data
+Remove DataAccess.getInstance() method
 
-* Implement popular question carousel
-* Fix bug in SearchBar onSubmit implementation missing value and
-onChange prop
+* getInstance() was a due to a misunderstanding on my part of how staic
+classes work.
