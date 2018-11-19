@@ -1,13 +1,47 @@
 import * as React from 'react';
 import Carousel from 'nuka-carousel';
+import { Link, Redirect } from 'react-router-dom';
 
 import { SpeechBubble } from './shared/components/speech-bubble';
 import { SearchBar } from './shared/components'
+import { Question } from './shared/types';
 import logo from './shared/images/kis-logo.svg';
 import './landing.scss';
+import { DataAccess } from './shared/data-access';
 
-export class Landing extends React.Component {
+interface LandingProps {
+}
+interface LandingState {
+  shouldNavigateToSearchPage: boolean
+  searchString: string
+  popularQuestions: Question[]
+}
+
+export class Landing extends React.Component<LandingProps, LandingState> {
+
+  constructor(props: LandingProps) {
+    super(props);
+    this.state = {
+      popularQuestions: [],
+      shouldNavigateToSearchPage: false,
+      searchString: ''
+    }
+  }
+
+  componentWillMount() {
+    // fetch popular questions
+    DataAccess.getPopularQuestions(5).then( questions => {
+      this.setState({
+        popularQuestions: questions
+      })
+    })
+  }
+
   public render() {
+    if (this.state.shouldNavigateToSearchPage) {
+      const encodedSearchStr = encodeURIComponent(this.state.searchString);
+      return <Redirect to={`/search/${encodedSearchStr}`} />
+    } 
     return (
       <div className='landing-page'>
         <header className='landing-header'>
@@ -26,7 +60,11 @@ export class Landing extends React.Component {
           </div>
 
           <div className='landing-search-bar-container'>
-            <SearchBar onSubmit={this.handleSearchSubmit} />
+            <SearchBar 
+              value={this.state.searchString} 
+              onChange={this.handleSearchStringChange} 
+              onSearchButtonClick={this.handleSearchSubmit} 
+            />
           </div>
 
           <div className='divider'>
@@ -50,36 +88,19 @@ export class Landing extends React.Component {
                 return <button onClick={nextSlide} className='landing-carousel-control'>&gt;</button>
               }}
             >
-              <div className="speech-bubble-container">
-                <SpeechBubble
-                  type={'question'}
-                  text={'test text'}
-                />
-              </div>
-              <div className="speech-bubble-container">
-                <SpeechBubble
-                  type={'question'}
-                  text={'test text'}
-                />
-              </div>
-              <div className="speech-bubble-container">
-                <SpeechBubble
-                  type={'question'}
-                  text={'test text'}
-                />
-              </div>
-              <div className="speech-bubble-container">
-                <SpeechBubble
-                  type={'question'}
-                  text={'test text'}
-                />
-              </div>
-              <div className="speech-bubble-container">
-                <SpeechBubble
-                  type={'question'}
-                  text={'test text'}
-                />
-              </div>
+              { this.state.popularQuestions.map( q => {
+                //return (
+                return (
+                  <div className="speech-bubble-container" >
+                    <Link to={`/question/${q.id}`} key={`question-${q.id}`}>
+                    <SpeechBubble
+                      type={'question'}
+                      text={q.question}
+                    />
+                    </Link>
+                </div> );
+                //</Link>);
+              })}
             </Carousel>
           </div>
           <button className='browse-questions-button'>
@@ -90,7 +111,15 @@ export class Landing extends React.Component {
     );
   }
 
+  private handleSearchStringChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      searchString: ev.currentTarget.value
+    });
+  }
+
   private handleSearchSubmit = (ev: React.MouseEvent<HTMLButtonElement>) => {
-    // implement
+    this.setState({
+      shouldNavigateToSearchPage: true
+    })
   }
 }

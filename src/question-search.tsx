@@ -1,23 +1,14 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
 import { QuestionListElement } from './question-list-element'
+import { DataAccess } from './shared/data-access';
 
 import './question-search.scss';
 
-
-interface QuestionSearchProps {
-  defaultSearchText?: string
-}
-
-interface QuestionSearchState {
-  questions: Question[]
-  searchText: string
-}
-
-
-function BackHeader(){
+const BackHeader: React.SFC = (props) => {
   return(
     <div className='question-back-bar-container'>
       <button className='question-back-button'>
@@ -27,12 +18,30 @@ function BackHeader(){
   )
 }
 
+interface QuestionSearchProps {
+  defaultSearchText: string
+}
+
+interface QuestionSearchState {
+  questions: Question[]
+  searchString: string
+}
+
 export class QuestionSearch extends React.Component<QuestionSearchProps, QuestionSearchState> {
 
-  
-  private handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
-    console.log(ev.currentTarget.value);
-  };
+  constructor(props: QuestionSearchProps) {
+    super(props);
+    this.state = {
+      searchString: props.defaultSearchText,
+      questions: []
+    }
+  }
+
+  componentWillMount() {
+    DataAccess.getQuestionsBySearchString(this.props.defaultSearchText).then( questions => {
+      this.setState({questions: questions});
+    });
+  }
 
   render(){
     return (
@@ -40,80 +49,29 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
         <BackHeader/>
         <div className='question-search-header'>
           <div className='header-search-bar-container'>
-            <SearchBar onSubmit={this.handleSearchClick} />
+            <SearchBar 
+              value={this.state.searchString}
+              onChange={this.handleSearchStringChange}
+              onSearchButtonClick={this.handleSearchSubmit} 
+            />
           </div>
         </div>
         <div className='question-list-scroll-container'>
           <div className='question-list'>
-          {this.state.questions.map((question: Question) => <QuestionListElement
-                                              headerText={question.question}
-                                              bodyText={question.answer}/>)}
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='I have a really really really long, super big and hard question. How can I make it fit?' 
-              bodyText={'First off, I\'ve seen bigger. Second off, it doesn\'t matter how big the question is, it matters how good of a dick joke it was.'}  
-            />
-            <QuestionListElement 
-              headerText='How do you come up with questions about sex on the fly?' 
-              bodyText='I should have downloaded all of the questions before losing my wifi.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
-            <QuestionListElement 
-              headerText='How do you heal dick burns?' 
-              bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
-            />
+            {
+            this.state.questions.map( q => {
+              return (
+                <Link to={`/question?${q.id}`} key={`question-${q.id}`} >
+                  <QuestionListElement headerText={q.question} bodyText={q.answer} />
+                </Link>
+              );
+            })
+            }
             <div className='question-list-tail'>
               <button className='more-questions-button'>
                 See more questions
               </button>
             </div>
-            { /* question list footer */ }
             <div className='question-list-footer'>
                 <div className='info-icon'>
                   ?
@@ -129,5 +87,17 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
           </div>
       </div>
     );
+  }
+
+  private handleSearchStringChange  = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      searchString: ev.currentTarget.value
+    });
+  }
+
+  private handleSearchSubmit = (ev: any) => {
+    DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+      this.setState({questions: questions});
+    });
   }
 }

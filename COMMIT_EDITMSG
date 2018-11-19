@@ -1,2 +1,5 @@
-Write data access singleton class
+Connect landing and question-search to data
 
+* Implement popular question carousel
+* Fix bug in SearchBar onSubmit implementation missing value and
+onChange prop
