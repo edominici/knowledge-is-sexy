@@ -46,7 +46,6 @@ export class DataAccess {
     });
   }
 
-  private static instance: DataAccess;
   private static allQuestions: Question[];
   private static questionsRequestInFlight: boolean;
   private static questionsRequest: Promise<Question[]>;
