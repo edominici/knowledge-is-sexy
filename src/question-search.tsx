@@ -22,6 +22,16 @@ const QuestionListElement: React.SFC<QuestionListElementProps> = (props) => {
   </div>);
 }
 
+function BackHeader(){
+  return(
+    <div className='question-back-bar-container'>
+      <button className='question-back-button'>
+        Back
+      </button>
+    </div>
+  )
+}
+
 export const QuestionSearch: React.SFC<any> = (props) => {
 
   const handleSearchClick: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
@@ -30,6 +40,7 @@ export const QuestionSearch: React.SFC<any> = (props) => {
 
   return (
     <div className='page'>
+      <BackHeader/>
       <div className='question-search-header'>
         <div className='header-search-bar-container'>
           <SearchBar onSubmit={handleSearchClick} />
@@ -97,6 +108,11 @@ export const QuestionSearch: React.SFC<any> = (props) => {
             headerText='How do you heal dick burns?' 
             bodyText='The best way to heal dick burns is to not get them in the first place, Staniel.' 
           />
+          <div className='question-list-tail'>
+            <button className='more-questions-button'>
+              See more questions
+            </button>
+          </div>
           { /* question list footer */ }
           <div className='question-list-footer'>
               <div className='info-icon'>
