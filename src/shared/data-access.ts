@@ -1,9 +1,6 @@
 import { Question } from '../../src/shared/types';
-<<<<<<< HEAD
 import algoliasearch from 'algoliasearch';
-=======
 import { parse } from 'papaparse';
->>>>>>> 374b7f9a96a514df587065129800aa522b32a55f
 
 const GOOGLE_SHEETS_QUESTIONS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ3Ag8K_d4V3rzBf9pXQ5J9GInmj9VCeNknjuV_S9sO-yqZOzCg1gbQt3UHdthqXOL24v0Fw4fPrFy/pub?output=csv';
 interface RawGoogleSheetsQuestion {
@@ -34,12 +31,6 @@ export class DataAccess {
     if (!DataAccess.instance) {
       // create the singleton instance
       DataAccess.instance = new DataAccess();
-<<<<<<< HEAD
-      // initiate web request 
-      //index.addObjects(DataAccess.questions, function(err, content) {
-      //  console.log(content);
-      //});
-=======
 
       // TODO handle network errors here, use repeated download attempts + falloff
       // initiate loading google sheets data as csv
@@ -53,7 +44,6 @@ export class DataAccess {
         }
       });
 
->>>>>>> 374b7f9a96a514df587065129800aa522b32a55f
     }
     return DataAccess.instance;
   }
