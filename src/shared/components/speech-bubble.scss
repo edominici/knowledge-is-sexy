@@ -38,9 +38,9 @@
 }
 
 .speech-bubble-answer {
-  border: 1px solid $col-app-gray-light;
+  border: 1px solid $col-app-gray-lighter;
   color: $col-text-black;
-  background-color: $col-app-base-light;
+  background-color: $col-app-gray-lighter;
 }
 /** 
  * Use :after for speech bubble pointer, use :before to make a fake border
@@ -58,13 +58,13 @@
   content: '';
   top: 20px;
   left: -17px;
-  border-color: transparent $col-app-gray-light;
+  border-color: transparent $col-app-gray-lighter;
   border-width: 10px 16px 10px 0;
 }
 .speech-bubble-answer:after {
   top: 20px;
   left: -16px;
   //border-color: transparent $col-app-base-light;
-  border-color: transparent $col-app-base-light;
+  border-color: transparent $col-app-gray-lighter;
   border-width: 10px 16px 10px 0;
 }
