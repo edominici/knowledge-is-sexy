@@ -1,11 +1,16 @@
 import { Question } from '../../src/shared/types';
+import algoliasearch from 'algoliasearch';
 
 export class DataAccess {
+
 
   public static getInstance() {
     if (!DataAccess.instance) {
       DataAccess.instance = new DataAccess();
       // initiate web request 
+      //index.addObjects(DataAccess.questions, function(err, content) {
+      //  console.log(content);
+      //});
     }
     return DataAccess.instance;
   }
@@ -38,14 +43,22 @@ export class DataAccess {
       if (DataAccess.questions === undefined) {
         reject(DataAccess.QuestionsNotLoadedError)
       }
-      // TODO implement by talking to algolia
+      DataAccess.index.search({query: searchString}, (err: any, content: any): any => {
+        if (err) reject(err);
+        resolve(content.hits);
+      });
     });
   }
 
   private static instance: DataAccess;
   private static questions: Question[];
+  private static index: any;
 
   private constructor() {
-
+    const API_KEY = '';
+    const APP_ID = '';
+    const INDEX_NAME='';
+    var client = algoliasearch(APP_ID, API_KEY);
+    DataAccess.index = client.initIndex(INDEX_NAME);
   }
 }
