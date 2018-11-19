@@ -6,7 +6,6 @@ import { SearchBar } from './shared/components'
 import logo from './shared/images/kis-logo.svg';
 import './landing.scss';
 
-
 export class Landing extends React.Component {
   public render() {
     return (

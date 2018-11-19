@@ -2,12 +2,9 @@ import * as React from 'react';
 
 import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
-import { DataAccess } from './shared/data-access';
-import { QuestionListElement } from './shared/question-list-element'
-
+import { QuestionListElement } from './question-list-element'
 
 import './question-search.scss';
-import { ReactComponent } from '*.svg';
 
 
 interface QuestionSearchProps {

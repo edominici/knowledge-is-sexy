@@ -1,8 +1,2 @@
-[WIP] Write data access singleton class
+Write data access singleton class
 
-* DONE sketch out implementations of methods to return popular questions
-and questions in categories
-* DONE load questions from google sheets 'backend' on load
-  ** add new dependency papa parse, to parse google sheets csv file
-* TODO implement getQuestionsBySearchString()
-* TODO test
