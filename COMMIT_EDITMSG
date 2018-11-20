@@ -1,8 +1,4 @@
-Fix bug in QuestionSearch browser history
+Tweak question-search styles
 
-* BUG: after navigating to /search?q={originalSearchTerm}, subsequent searches
-did not navigate to /search?q={newSearchTerm} but instead stayed at
-/search?q={originalSearchTerm}
-
-* NOTE: we may remove the search term url feature in the future, so that
-the browser history doesn't get stored.
+* Increase margin of question text
+* Increase margin of each preview

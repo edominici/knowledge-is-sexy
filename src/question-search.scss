@@ -34,7 +34,8 @@ $question-search-header-height: 10vh;
 .question-list-element {
   position: relative;
   width: 100%;
-  height: 80px;
+  height: 90px;
+  padding: 5px 0;
   border-bottom: 1px solid $col-app-gray;
 
   display: flex;
@@ -83,6 +84,7 @@ $question-search-header-height: 10vh;
   flex-direction: column;
   justify-content: center;
   flex: 1 0 auto;
+  margin-bottom: 3px;
 }
 
 .question-list-element .body-text {
