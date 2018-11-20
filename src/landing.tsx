@@ -17,7 +17,7 @@ interface LandingState {
   popularQuestions: Question[]
 }
 
-export class Landing extends React.Component<LandingProps, LandingState> {
+export class Landing extends React.PureComponent<LandingProps, LandingState> {
 
   constructor(props: LandingProps) {
     super(props);
@@ -79,6 +79,7 @@ export class Landing extends React.Component<LandingProps, LandingState> {
           <div className='landing-carousel-container'>
             <Carousel
               slideWidth={1.0}
+              disableKeyboardControls={true}
               initialSlideHeight={200}
               wrapAround={true}
               renderCenterLeftControls={({ previousSlide }: any) => {
@@ -89,17 +90,15 @@ export class Landing extends React.Component<LandingProps, LandingState> {
               }}
             >
               { this.state.popularQuestions.map( q => {
-                //return (
                 return (
-                  <div className="speech-bubble-container" >
-                    <Link to={`/question/${q.id}`} key={`question-${q.id}`}>
-                    <SpeechBubble
-                      type={'question'}
-                      text={q.question}
-                    />
+                  <div key={`question-${q.id}`} className="speech-bubble-container" >
+                    <Link to={`/question/${q.id}`} >
+                      <SpeechBubble
+                        type={'question'}
+                        text={q.question}
+                      />
                     </Link>
-                </div> );
-                //</Link>);
+                  </div>);
               })}
             </Carousel>
           </div>
