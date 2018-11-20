@@ -58,7 +58,7 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
             {
             this.state.questions.map( q => {
               return (
-                <Link to={`/question?${q.id}`} key={`question-${q.id}`} >
+                <Link to={`/question/${q.id}`} key={`question-${q.id}`} >
                   <QuestionListElement headerText={q.question} bodyText={q.answer} />
                 </Link>
               );
