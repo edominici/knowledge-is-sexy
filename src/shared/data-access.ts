@@ -1,4 +1,11 @@
 import algoliasearch from 'algoliasearch';
+// this is a public key that enables searching the app's algolia index. It's safe to share with the client.
+const ALGOLIA_SEARCH_API_KEY = '7a9d5fa02059e413c7bafc46c435fa05';
+const APP_ID = '1SO498QEWN';
+const INDEX_NAME = 'dev_Questions';
+const client = algoliasearch(APP_ID, ALGOLIA_SEARCH_API_KEY);
+const algoliaIndex = client.initIndex(INDEX_NAME);
+
 import { parse } from 'papaparse';
 
 import { Question } from '../shared/types';
@@ -36,7 +43,7 @@ export class DataAccess {
 
   public static getQuestionsBySearchString = (searchString: string): Promise<Question[]> => {
     return new Promise( (resolve, reject) => {
-      DataAccess.questionsIndex.search({query: searchString}, (err: any, content: any): any => {
+      algoliaIndex.search({query: searchString}, (err: any, content: any): any => {
         if (err) {
           reject(err);
         } else {
@@ -49,15 +56,6 @@ export class DataAccess {
   private static allQuestions: Question[];
   private static questionsRequestInFlight: boolean;
   private static questionsRequest: Promise<Question[]>;
-  private static questionsIndex: any;
-
-  private constructor() {
-    const API_KEY = '';
-    const APP_ID = '';
-    const INDEX_NAME= '';
-    var client = algoliasearch(APP_ID, API_KEY);
-    DataAccess.questionsIndex = client.initIndex(INDEX_NAME);
-  }
 
   /**
    * loadAllQuestions makes a network request for all questions from the backend.
