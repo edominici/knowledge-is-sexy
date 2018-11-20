@@ -1,4 +1,5 @@
-Tweak question-search styles
+Implement 'more questions' button on question-search
 
-* Increase margin of question text
-* Increase margin of each preview
+* limit the number of displayed questions to 10
+* append next 10 questions on clicking more-questions button
+* hide button if no more questions remaining

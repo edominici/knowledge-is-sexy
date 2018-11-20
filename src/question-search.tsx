@@ -16,8 +16,11 @@ interface QuestionSearchProps extends RouteComponentProps<QuestionSearchParams> 
 
 interface QuestionSearchState {
   questions: Question[]
+  numQuestionsToDisplay: number
   searchString: string
 }
+
+const QUESTION_CHUNK_SIZE = 10;
 
 export class QuestionSearch extends React.Component<QuestionSearchProps, QuestionSearchState> {
 
@@ -29,13 +32,13 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
     const searchString = decodeURIComponent(encodedSearchString);
     this.state = {
       searchString,
+      numQuestionsToDisplay: QUESTION_CHUNK_SIZE, // display one chunk of questions by default
       questions: []
     }
   }
 
   componentWillMount() {
     DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
-      console.log(questions);
       this.setState({questions: questions});
     });
   }
@@ -56,7 +59,7 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
         <div className='question-list-scroll-container'>
           <div className='question-list'>
             {
-            this.state.questions.map( q => {
+            this.state.questions.slice(0, this.state.numQuestionsToDisplay).map( q => {
               return (
                 <div onClick={() => this.props.history.push(`/question/${q.id}`)} key={`question-${q.id}`} >
                   <QuestionListElement headerText={q.question} bodyText={q.answer} />
@@ -64,11 +67,13 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
               );
             })
             }
+            { this.state.numQuestionsToDisplay <= this.state.questions.length &&
             <div className='question-list-tail'>
-              <button className='more-questions-button'>
+              <button onClick={this.handleMoreQuestionsClick} className='more-questions-button'>
                 See more questions
               </button>
             </div>
+            }
             <div className='question-list-footer'>
                 <div className='info-icon'>
                   ?
@@ -99,4 +104,11 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
       this.setState({questions: questions});
     });
   }
+
+  private handleMoreQuestionsClick: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
+    this.setState({
+      numQuestionsToDisplay: this.state.numQuestionsToDisplay + QUESTION_CHUNK_SIZE
+    })
+  }
+
 }
