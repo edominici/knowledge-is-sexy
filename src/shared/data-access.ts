@@ -20,8 +20,6 @@ import { QuestionCategory } from '../shared/enums'
  */
 export class DataAccess {
 
-  public static QuestionsNotLoadedError: Error = new Error('Questions not loaded!');
-
   public static getPopularQuestions = (count: number): Promise<Question[]> => {
     // FIXME this is a mock implementation that returns a random set of questions
     return new Promise( (resolve, reject) => {
@@ -48,6 +46,19 @@ export class DataAccess {
           reject(err);
         } else {
           resolve(content.hits);
+        }
+      });
+    });
+  }
+
+  public static getQuestionById = (id: string): Promise<Question | null> => {
+    return new Promise( (resolve, reject) => {
+      DataAccess.awaitQuestionsLoaded().then( questions => {
+        const matchingQuestion = questions.find( q => q.id === id);
+        if (matchingQuestion === undefined) {
+          resolve(null);
+        } else {
+          resolve(matchingQuestion);
         }
       });
     });

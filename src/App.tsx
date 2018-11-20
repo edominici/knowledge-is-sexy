@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { Landing } from './landing';
-import { Question } from './question';
+import { QuestionPage } from './question-page';
 import { QuestionSearch } from './question-search';
 import { QuestionBrowse } from './question-browse';
 
@@ -11,8 +11,8 @@ export const App = () => {
     <BrowserRouter>
       <Switch>
         <Route path='/search' component={QuestionSearch} />
-        <Route path='/browse/' component={QuestionBrowse} />
-        <Route path='/question/:id' component={Question} />
+        <Route path='/browse' component={QuestionBrowse} />
+        <Route path='/question/:id' component={QuestionPage} />
         <Route path='/' exact={true} component={Landing} />
       </Switch>
     </BrowserRouter>

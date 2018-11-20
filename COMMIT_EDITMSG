@@ -1,4 +1,3 @@
-Fix browser-history bug in navigation to search
+Implement question page loading questions by id
 
-* Back button was not working after navigating from landing to question
-search -- was caused by not putting the `push` property on <Redirect>.
+* add DataAccess.getQuestionById() method
