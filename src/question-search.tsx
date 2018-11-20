@@ -94,6 +94,8 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
 
   private handleSearchSubmit = (ev: any) => {
     DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+      const searchStringUrl = encodeURIComponent(this.state.searchString);
+      this.props.history.push(`/search?q=${searchStringUrl}`);
       this.setState({questions: questions});
     });
   }

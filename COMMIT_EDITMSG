@@ -1,9 +1,8 @@
-Replace react-router Link with direct calls to history.push
+Fix bug in QuestionSearch browser history
 
-* reasoning:
-  ** Children of <Link> retain <a> styling, such as underlines
-  ** <Link> by default has its own tabindex
-  ** Wrapping buttons with <Link> results in <a><button /></a> which is
-  janky html
-* Basically, I could use <Link style={{tabIndex: -1, textDecoration:
-'none'}}> everywhere or I could just not use Link.
+* BUG: after navigating to /search?q={originalSearchTerm}, subsequent searches
+did not navigate to /search?q={newSearchTerm} but instead stayed at
+/search?q={originalSearchTerm}
+
+* NOTE: we may remove the search term url feature in the future, so that
+the browser history doesn't get stored.
