@@ -1,1 +1,5 @@
-Fix typo in landing page
+Implement question-ask page
+
+* Use formspree to email asked questions
+* Change SpeechBubble implementation to use children rather than
+specify text

@@ -100,10 +100,9 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
                     className="speech-bubble-container" 
                     onClick={() => this.props.history.push(`/question/${q.id}`)}
                   >
-                    <SpeechBubble
-                      type={'question'}
-                      text={q.question}
-                    />
+                    <SpeechBubble type={'question'}>
+                      {q.question}
+                    </SpeechBubble>
                   </div>);
               })}
             </Carousel>

@@ -2,7 +2,6 @@ import * as React from 'react';
 
 interface SpeechBubbleProps {
   type: 'question' | 'answer'
-  text: string
 }
 
 import './speech-bubble.scss';
@@ -17,7 +16,7 @@ export const SpeechBubble: React.SFC<SpeechBubbleProps> = (props) => {
 
   return (
     <div className={className}>
-      {props.text}
+      {props.children}
     </div>
   )
 

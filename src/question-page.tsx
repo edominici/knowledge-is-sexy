@@ -41,20 +41,18 @@ export class QuestionPage extends React.Component<QuestionPageProps, QuestionPag
         <div className='question-container'>
           <div className='question'>
             <UserIcon  className='user-icon user-icon-asker' />
-            <SpeechBubble 
-              type='question' 
-              text={this.state.question ? this.state.question.question : ''}
-            />
+            <SpeechBubble type='question' >
+              {this.state.question ? this.state.question.question : ''}
+            </SpeechBubble>
           </div>
         </div>
         <div className='answer-list-container'>
           <div className='answer-list'>
             <div className='answer'>
               <UserIcon username='KIS Expert' verified={true} className='user-icon user-icon-answerer' />
-              <SpeechBubble 
-                type='answer'
-                text={this.state.question ? this.state.question.answer : ''}
-              />
+              <SpeechBubble type='answer'>
+                {this.state.question ? this.state.question.answer : ''}
+              </SpeechBubble>
             </div>
           </div>
         </div>

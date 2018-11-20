@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Redirect } from 'react-router-dom';
 
 import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
@@ -18,6 +18,7 @@ interface QuestionSearchState {
   questions: Question[]
   numQuestionsToDisplay: number
   searchString: string
+  navigateToAskExpertPage: boolean
 }
 
 const QUESTION_CHUNK_SIZE = 10;
@@ -33,7 +34,8 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
     this.state = {
       searchString,
       numQuestionsToDisplay: QUESTION_CHUNK_SIZE, // display one chunk of questions by default
-      questions: []
+      questions: [],
+      navigateToAskExpertPage: false
     }
   }
 
@@ -44,6 +46,14 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
   }
 
   render(){
+    if (this.state.navigateToAskExpertPage) {
+      return <Redirect push to={{
+        pathname: '/ask-expert',
+        state: {
+          questionTemplate: this.state.searchString
+        }
+      }} />
+    }
     return (
       <div className='page'>
         <BackHeader routeTo='/' />
@@ -81,9 +91,9 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
                 <div className='header-text'>
                   Doesn't answer your question?
                 </div>
-                <div className='ask-expert-button'>
+                <button className='ask-expert-button' onClick={this.handleAskExpertClick}>
                   Ask an expert
-                </div>
+                </button>
                 </div>
             </div>
           </div>
@@ -109,6 +119,13 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
     this.setState({
       numQuestionsToDisplay: this.state.numQuestionsToDisplay + QUESTION_CHUNK_SIZE
     })
+  }
+
+  private handleAskExpertClick: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
+    this.setState({
+      navigateToAskExpertPage: true
+    })
+
   }
 
 }
