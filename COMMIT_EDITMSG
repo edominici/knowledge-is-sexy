@@ -1,5 +1,1 @@
-Implement 'more questions' button on question-search
-
-* limit the number of displayed questions to 10
-* append next 10 questions on clicking more-questions button
-* hide button if no more questions remaining
+Fix typo in landing page

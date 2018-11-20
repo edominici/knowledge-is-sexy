@@ -60,7 +60,7 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
           <div className='content-text'>
             <span className='content-text-accent'>Ask questions</span> about sex.
             <br />
-            Get answers from <span className='content-text-accent'> the experts</span>
+            Get answers from <span className='content-text-accent'> the experts.</span>
           </div>
 
           <div className='landing-search-bar-container'>
