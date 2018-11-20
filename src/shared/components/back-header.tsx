@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import './back-header.scss';
 
@@ -17,10 +17,8 @@ const BackHeaderWithoutRouter = (props: BackHeaderProps) => {
 
   } else {
     return <div className='back-bar-container'>
-        <button className='back-button'>
-          <Link to={props.routeTo}> 
-            &lt; Back
-          </Link>
+        <button onClick={ ev => props.history.push(props.routeTo as string) } className='back-button'>
+          &lt; Back
         </button>
       </div>
   }

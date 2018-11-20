@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
@@ -58,9 +58,9 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
             {
             this.state.questions.map( q => {
               return (
-                <Link to={`/question/${q.id}`} key={`question-${q.id}`} >
+                <div onClick={() => this.props.history.push(`/question/${q.id}`)} key={`question-${q.id}`} >
                   <QuestionListElement headerText={q.question} bodyText={q.answer} />
-                </Link>
+                </div>
               );
             })
             }

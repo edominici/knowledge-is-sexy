@@ -1,1 +1,9 @@
-Fix bug in question-search links to question page
+Replace react-router Link with direct calls to history.push
+
+* reasoning:
+  ** Children of <Link> retain <a> styling, such as underlines
+  ** <Link> by default has its own tabindex
+  ** Wrapping buttons with <Link> results in <a><button /></a> which is
+  janky html
+* Basically, I could use <Link style={{tabIndex: -1, textDecoration:
+'none'}}> everywhere or I could just not use Link.
