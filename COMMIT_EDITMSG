@@ -1,1 +1,4 @@
-Implement navigation to and from question-search
+Fix browser-history bug in navigation to search
+
+* Back button was not working after navigating from landing to question
+search -- was caused by not putting the `push` property on <Redirect>.

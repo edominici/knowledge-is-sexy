@@ -40,7 +40,7 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
   public render() {
     if (this.state.shouldNavigateToSearchPage) {
       const encodedSearchStr = encodeURIComponent(this.state.searchString);
-      return <Redirect to={{
+      return <Redirect push to={{
         pathname: '/search',
         search: `?q=${encodedSearchStr}`
       }} />
