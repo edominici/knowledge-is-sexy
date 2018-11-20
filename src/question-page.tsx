@@ -6,6 +6,7 @@ import './question-page.scss';
 import { RouteComponentProps } from 'react-router';
 import { Question } from './shared/types';
 import { DataAccess } from './shared/data-access';
+import { BackHeader } from './shared/components/back-header';
 
 interface QuestionPageRouteParams {
   id: string
@@ -36,6 +37,7 @@ export class QuestionPage extends React.Component<QuestionPageProps, QuestionPag
   public render() {
     return (
       <div className='page'>
+        <BackHeader />
         <div className='question-container'>
           <div className='question'>
             <UserIcon  className='user-icon user-icon-asker' />

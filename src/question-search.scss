@@ -19,23 +19,6 @@ $question-search-header-height: 10vh;
   width: 85vw;
 }
 
-.question-back-bar-container {
-  background-color: $col-app-gray-lightest;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  align-items: flex-start;
-  box-shadow: $box-shadow-z1;
-}
-.question-back-button {
-  background-color: $col-app-gray-lightest;
-  border: none;
-  display: flex;
-  flex-direction: row;
-  align-self: center;
-  font-size: 1em;
-  color: blue;
-}
 
 .question-list-scroll-container {
   background-color: $col-app-neutral;

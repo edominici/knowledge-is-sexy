@@ -5,23 +5,9 @@ import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
 import { QuestionListElement } from './question-list-element'
 import { DataAccess } from './shared/data-access';
+import { BackHeader } from './shared/components';
 
 import './question-search.scss';
-
-interface BackHeaderProps {
-  routeTo: string
-}
-const BackHeader: React.SFC<BackHeaderProps> = (props) => {
-  return (
-    <div className='question-back-bar-container'>
-      <button className='question-back-button'>
-        <Link to={props.routeTo}> 
-          Back
-        </Link>
-      </button>
-    </div>
-  )
-}
 
 export interface QuestionSearchParams {
 }
