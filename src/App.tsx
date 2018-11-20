@@ -10,7 +10,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path='/search/:searchStr' component={QuestionSearch} />
+        <Route path='/search' component={QuestionSearch} />
         <Route path='/browse/' component={QuestionBrowse} />
         <Route path='/question/:id' component={Question} />
         <Route path='/' exact={true} component={Landing} />

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
@@ -8,18 +8,24 @@ import { DataAccess } from './shared/data-access';
 
 import './question-search.scss';
 
-const BackHeader: React.SFC = (props) => {
-  return(
+interface BackHeaderProps {
+  routeTo: string
+}
+const BackHeader: React.SFC<BackHeaderProps> = (props) => {
+  return (
     <div className='question-back-bar-container'>
       <button className='question-back-button'>
-        Back
+        <Link to={props.routeTo}> 
+          Back
+        </Link>
       </button>
     </div>
   )
 }
 
-interface QuestionSearchProps {
-  defaultSearchText: string
+export interface QuestionSearchParams {
+}
+interface QuestionSearchProps extends RouteComponentProps<QuestionSearchParams> {
 }
 
 interface QuestionSearchState {
@@ -31,14 +37,19 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
 
   constructor(props: QuestionSearchProps) {
     super(props);
+    // remove '?q=' at start of string
+    const QUERY_PREFIX_LENGTH = 3;
+    const encodedSearchString = props.location.search.slice(QUERY_PREFIX_LENGTH);
+    const searchString = decodeURIComponent(encodedSearchString);
     this.state = {
-      searchString: props.defaultSearchText,
+      searchString,
       questions: []
     }
   }
 
   componentWillMount() {
-    DataAccess.getQuestionsBySearchString(this.props.defaultSearchText).then( questions => {
+    DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+      console.log(questions);
       this.setState({questions: questions});
     });
   }
@@ -46,7 +57,7 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
   render(){
     return (
       <div className='page'>
-        <BackHeader/>
+        <BackHeader routeTo='/' />
         <div className='question-search-header'>
           <div className='header-search-bar-container'>
             <SearchBar 

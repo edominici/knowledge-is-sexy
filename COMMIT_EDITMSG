@@ -1,4 +1,1 @@
-Remove DataAccess.getInstance() method
-
-* getInstance() was a due to a misunderstanding on my part of how staic
-classes work.
+Implement navigation to and from question-search
