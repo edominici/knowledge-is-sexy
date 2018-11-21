@@ -29,6 +29,7 @@
 .speech-bubble-question {
   color: $col-text-white;
   background-color: $col-app-accent;
+  text-align: center;
 }
 .speech-bubble-question:after {
   bottom: 10px;
@@ -41,6 +42,7 @@
   border: 1px solid $col-app-gray-lighter;
   color: $col-text-black;
   background-color: $col-app-gray-lighter;
+  text-align: left;
 }
 /** 
  * Use :after for speech bubble pointer, use :before to make a fake border

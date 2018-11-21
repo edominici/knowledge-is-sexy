@@ -1,27 +1,13 @@
 import * as React from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Redirect } from 'react-router-dom';
 
 import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
 import { QuestionListElement } from './question-list-element'
 import { DataAccess } from './shared/data-access';
+import { BackHeader } from './shared/components';
 
 import './question-search.scss';
-
-interface BackHeaderProps {
-  routeTo: string
-}
-const BackHeader: React.SFC<BackHeaderProps> = (props) => {
-  return (
-    <div className='question-back-bar-container'>
-      <button className='question-back-button'>
-        <Link to={props.routeTo}> 
-          Back
-        </Link>
-      </button>
-    </div>
-  )
-}
 
 export interface QuestionSearchParams {
 }
@@ -30,8 +16,12 @@ interface QuestionSearchProps extends RouteComponentProps<QuestionSearchParams> 
 
 interface QuestionSearchState {
   questions: Question[]
+  numQuestionsToDisplay: number
   searchString: string
+  navigateToAskExpertPage: boolean
 }
+
+const QUESTION_CHUNK_SIZE = 10;
 
 export class QuestionSearch extends React.Component<QuestionSearchProps, QuestionSearchState> {
 
@@ -43,18 +33,27 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
     const searchString = decodeURIComponent(encodedSearchString);
     this.state = {
       searchString,
-      questions: []
+      numQuestionsToDisplay: QUESTION_CHUNK_SIZE, // display one chunk of questions by default
+      questions: [],
+      navigateToAskExpertPage: false
     }
   }
 
   componentWillMount() {
     DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
-      console.log(questions);
       this.setState({questions: questions});
     });
   }
 
   render(){
+    if (this.state.navigateToAskExpertPage) {
+      return <Redirect push to={{
+        pathname: '/ask-expert',
+        state: {
+          questionTemplate: this.state.searchString
+        }
+      }} />
+    }
     return (
       <div className='page'>
         <BackHeader routeTo='/' />
@@ -70,19 +69,21 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
         <div className='question-list-scroll-container'>
           <div className='question-list'>
             {
-            this.state.questions.map( q => {
+            this.state.questions.slice(0, this.state.numQuestionsToDisplay).map( q => {
               return (
-                <Link to={`/question?${q.id}`} key={`question-${q.id}`} >
+                <div onClick={() => this.props.history.push(`/question/${q.id}`)} key={`question-${q.id}`} >
                   <QuestionListElement headerText={q.question} bodyText={q.answer} />
-                </Link>
+                </div>
               );
             })
             }
+            { this.state.numQuestionsToDisplay <= this.state.questions.length &&
             <div className='question-list-tail'>
-              <button className='more-questions-button'>
+              <button onClick={this.handleMoreQuestionsClick} className='more-questions-button'>
                 See more questions
               </button>
             </div>
+            }
             <div className='question-list-footer'>
                 <div className='info-icon'>
                   ?
@@ -90,9 +91,9 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
                 <div className='header-text'>
                   Doesn't answer your question?
                 </div>
-                <div className='ask-expert-button'>
+                <button className='ask-expert-button' onClick={this.handleAskExpertClick}>
                   Ask an expert
-                </div>
+                </button>
                 </div>
             </div>
           </div>
@@ -108,7 +109,23 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
 
   private handleSearchSubmit = (ev: any) => {
     DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+      const searchStringUrl = encodeURIComponent(this.state.searchString);
+      this.props.history.push(`/search?q=${searchStringUrl}`);
       this.setState({questions: questions});
     });
   }
+
+  private handleMoreQuestionsClick: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
+    this.setState({
+      numQuestionsToDisplay: this.state.numQuestionsToDisplay + QUESTION_CHUNK_SIZE
+    })
+  }
+
+  private handleAskExpertClick: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
+    this.setState({
+      navigateToAskExpertPage: true
+    })
+
+  }
+
 }

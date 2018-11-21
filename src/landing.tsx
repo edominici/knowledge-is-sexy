@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Carousel from 'nuka-carousel';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { SpeechBubble } from './shared/components/speech-bubble';
 import { SearchBar } from './shared/components'
@@ -9,8 +9,9 @@ import logo from './shared/images/kis-logo.svg';
 import './landing.scss';
 import { DataAccess } from './shared/data-access';
 
-interface LandingProps {
+interface LandingProps extends RouteComponentProps<void> {
 }
+
 interface LandingState {
   shouldNavigateToSearchPage: boolean
   searchString: string
@@ -59,7 +60,7 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
           <div className='content-text'>
             <span className='content-text-accent'>Ask questions</span> about sex.
             <br />
-            Get answers from <span className='content-text-accent'> the experts</span>
+            Get answers from <span className='content-text-accent'> the experts.</span>
           </div>
 
           <div className='landing-search-bar-container'>
@@ -94,13 +95,14 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
             >
               { this.state.popularQuestions.map( q => {
                 return (
-                  <div key={`question-${q.id}`} className="speech-bubble-container" >
-                    <Link to={`/question/${q.id}`} >
-                      <SpeechBubble
-                        type={'question'}
-                        text={q.question}
-                      />
-                    </Link>
+                  <div 
+                    key={`question-${q.id}`} 
+                    className="speech-bubble-container" 
+                    onClick={() => this.props.history.push(`/question/${q.id}`)}
+                  >
+                    <SpeechBubble type={'question'}>
+                      {q.question}
+                    </SpeechBubble>
                   </div>);
               })}
             </Carousel>
