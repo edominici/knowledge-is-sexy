@@ -43,7 +43,6 @@ const BackHeader: React.SFC<BackHeaderProps> = (props) => {
 
 const CategoryButton: React.SFC<CategoryButtonProps> = (props) => {
     const encodedCategoryStr = encodeURIComponent(props.category);
-
     return(
         <div className = 'category-button-container'>
             <div className = 'category-button-icon-container'>
@@ -55,7 +54,7 @@ const CategoryButton: React.SFC<CategoryButtonProps> = (props) => {
             </Link>
             </div>
             <div className = 'category-button-text'>
-                {props.category}
+                {QuestionCategory[props.category].toLowerCase().replace(/^(.)|\s(.)/g, ($1:any) => $1.toUpperCase())}
             </div>
         </div>
     )
@@ -76,11 +75,12 @@ const CategoryListContainer: React.SFC<CategoryListProps> = (props) => {
         <div className = 'category-list-container'
             //style = {listStyle}
             >
-            {Object.keys(QuestionCategory).map(key => QuestionCategory[key]).map((c:string) => {
+            {Object.keys(QuestionCategory).map(key => //QuestionCategory[key]).map((c:string) => 
+            {
                 return(
-                    <CategoryButton category = {c.toLowerCase().replace(/^(.)|\s(.)/g, ($1) => $1.toUpperCase())}
+                    <CategoryButton category = {key}
                                     routeTo = '/search'
-                                    key = {c}
+                                    key = {key}
                                     />
                 )
 

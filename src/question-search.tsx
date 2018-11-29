@@ -44,12 +44,11 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
   }
 
   componentWillMount() {
-    if(this.state.queryPrefix === '?c='){
+    if(this.state.queryPrefix === "?c="){
       DataAccess.getQuestionsInCategory(QuestionCategory[this.state.searchString]).then( questions => {
         this.setState({questions: questions});
       });
-    }
-    if(this.state.queryPrefix === '?q='){
+    }else{
       DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
         this.setState({questions: questions});
       });
