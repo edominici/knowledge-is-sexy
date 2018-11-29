@@ -6,6 +6,7 @@ import { Question } from './shared/types';
 import { QuestionListElement } from './question-list-element'
 import { DataAccess } from './shared/data-access';
 import { BackHeader } from './shared/components';
+import { QuestionCategory } from './shared/enums/question-category';
 
 import './question-search.scss';
 
@@ -19,6 +20,7 @@ interface QuestionSearchState {
   numQuestionsToDisplay: number
   searchString: string
   navigateToAskExpertPage: boolean
+  queryPrefix: string
 }
 
 const QUESTION_CHUNK_SIZE = 10;
@@ -29,20 +31,29 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
     super(props);
     // remove '?q=' at start of string
     const QUERY_PREFIX_LENGTH = 3;
+    const queryPrefix = props.location.search.slice(0,QUERY_PREFIX_LENGTH);
     const encodedSearchString = props.location.search.slice(QUERY_PREFIX_LENGTH);
     const searchString = decodeURIComponent(encodedSearchString);
     this.state = {
       searchString,
+      queryPrefix,
       numQuestionsToDisplay: QUESTION_CHUNK_SIZE, // display one chunk of questions by default
       questions: [],
-      navigateToAskExpertPage: false
+      navigateToAskExpertPage: false,
     }
   }
 
   componentWillMount() {
-    DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
-      this.setState({questions: questions});
-    });
+    if(this.state.queryPrefix === '?c='){
+      DataAccess.getQuestionsInCategory(QuestionCategory[this.state.searchString]).then( questions => {
+        this.setState({questions: questions});
+      });
+    }
+    if(this.state.queryPrefix === '?q='){
+      DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+        this.setState({questions: questions});
+      });
+    }
   }
 
   render(){

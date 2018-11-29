@@ -107,7 +107,8 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
               })}
             </Carousel>
           </div>
-          <button className='browse-questions-button'>
+          <button className='browse-questions-button'
+                  onClick = {() => this.props.history.push('/category')}>
             Browse questions
           </button>
         </div>
@@ -126,4 +127,5 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
       shouldNavigateToSearchPage: true
     })
   }
+
 }

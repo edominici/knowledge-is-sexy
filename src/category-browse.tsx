@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { QuestionCategory } from './shared/enums/question-category';
 
 import './category-browse.scss';
-
 //import { Question } from './shared/types';
 //import { QuestionListElement } from './question-list-element'
 //import { DataAccess } from './shared/data-access';
@@ -23,10 +22,11 @@ interface CategoryButtonProps{
     category: string;
     icon?: string;
     routeTo: string;
+    //questionsInCategory: Question[];
 }
 
 interface CategoryListProps{
-    width: number;
+    //width: number;
 }
 
 const BackHeader: React.SFC<BackHeaderProps> = (props) => {
@@ -42,10 +42,15 @@ const BackHeader: React.SFC<BackHeaderProps> = (props) => {
 }
 
 const CategoryButton: React.SFC<CategoryButtonProps> = (props) => {
+    const encodedCategoryStr = encodeURIComponent(props.category);
+
     return(
         <div className = 'category-button-container'>
             <div className = 'category-button-icon-container'>
-            <Link to={props.routeTo}>
+            <Link to={{
+                pathname: props.routeTo,
+                search: `?c=${encodedCategoryStr}`
+                }}>
                 {props.icon}
             </Link>
             </div>
@@ -56,23 +61,27 @@ const CategoryButton: React.SFC<CategoryButtonProps> = (props) => {
     )
 }
 //TODO make the margins of the buttons evenly spaced instead of just centering the whole list
+//TODO make the button shape better
 //TODO make routeTo links to category search pages
 const CategoryListContainer: React.SFC<CategoryListProps> = (props) => {
-    var newWidth = props.width - (props.width%100);
+    /*var newWidth = props.width - (props.width%100);
     var margin = (props.width - newWidth)/2;
     var listStyle = {
         marginLeft: margin,
         marginRight: margin,
         width: newWidth,
-    }
+    }*/
 
     return(
         <div className = 'category-list-container'
-            style = {listStyle}>
+            //style = {listStyle}
+            >
             {Object.keys(QuestionCategory).map(key => QuestionCategory[key]).map((c:string) => {
                 return(
                     <CategoryButton category = {c.toLowerCase().replace(/^(.)|\s(.)/g, ($1) => $1.toUpperCase())}
-                                    routeTo = '/'/>
+                                    routeTo = '/search'
+                                    key = {c}
+                                    />
                 )
 
             })}
@@ -84,30 +93,28 @@ export class CategoryBrowse extends React.Component<CategoryBrowseProps, Categor
         
     constructor(props: CategoryBrowseProps) {
         super(props);
-        this.state={
+        /*this.state={
             width: window.innerWidth,
-        }
+        }*/
     }
     
-    resizeCategoryListContainer(){
+    /*resizeCategoryListContainer(){
         this.setState({width: window.innerWidth});
-    }
+    }*/
 
     /*
     * Add event listener
     */
-    componentDidMount() {
+   /* componentDidMount() {
         this.resizeCategoryListContainer();
         window.addEventListener("resize", this.resizeCategoryListContainer.bind(this));
       }
     
-      /*
-       * Remove event listener
-       */
+     
       componentWillUnmount() {
         window.removeEventListener("resize", this.resizeCategoryListContainer.bind(this));
       }
-    
+    */
 
     render(){
         return (
@@ -118,7 +125,7 @@ export class CategoryBrowse extends React.Component<CategoryBrowseProps, Categor
                     What do you want to know about?
                 </div>
             </div>
-            <CategoryListContainer width={this.state.width}/>
+            <CategoryListContainer /*width={this.state.width}*//>
         </div>
         )
     }
