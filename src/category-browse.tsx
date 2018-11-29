@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-//import { QuestionCategory } from './shared/enums/question-category';
+import { QuestionCategory } from './shared/enums/question-category';
 
 import './category-browse.scss';
-
 
 //import { Question } from './shared/types';
 //import { QuestionListElement } from './question-list-element'
@@ -16,6 +15,9 @@ interface BackHeaderProps {
 interface CategoryBrowseProps{
 
 }
+interface CategoryBrowseState{
+    width: number;
+}
 
 interface CategoryButtonProps{
     category: string;
@@ -23,6 +25,9 @@ interface CategoryButtonProps{
     routeTo: string;
 }
 
+interface CategoryListProps{
+    width: number;
+}
 
 const BackHeader: React.SFC<BackHeaderProps> = (props) => {
     return (
@@ -50,9 +55,62 @@ const CategoryButton: React.SFC<CategoryButtonProps> = (props) => {
         </div>
     )
 }
+//TODO make the margins of the buttons evenly spaced instead of just centering the whole list
+//TODO make routeTo links to category search pages
+const CategoryListContainer: React.SFC<CategoryListProps> = (props) => {
+    var newWidth = props.width - (props.width%100);
+    var margin = (props.width - newWidth)/2;
+    var listStyle = {
+        marginLeft: margin,
+        marginRight: margin,
+        width: newWidth,
+    }
 
-export const CategoryBrowse: React.SFC<CategoryBrowseProps> = (props) => {
-    return (
+    return(
+        <div className = 'category-list-container'
+            style = {listStyle}>
+            {Object.keys(QuestionCategory).map(key => QuestionCategory[key]).map((c:string) => {
+                return(
+                    <CategoryButton category = {c.toLowerCase().replace(/^(.)|\s(.)/g, ($1) => $1.toUpperCase())}
+                                    routeTo = '/'/>
+                )
+
+            })}
+        </div>
+    )
+}
+
+export class CategoryBrowse extends React.Component<CategoryBrowseProps, CategoryBrowseState> {
+        
+    constructor(props: CategoryBrowseProps) {
+        super(props);
+        this.state={
+            width: window.innerWidth,
+        }
+    }
+    
+    resizeCategoryListContainer(){
+        this.setState({width: window.innerWidth});
+    }
+
+    /*
+    * Add event listener
+    */
+    componentDidMount() {
+        this.resizeCategoryListContainer();
+        window.addEventListener("resize", this.resizeCategoryListContainer.bind(this));
+      }
+    
+      /*
+       * Remove event listener
+       */
+      componentWillUnmount() {
+        window.removeEventListener("resize", this.resizeCategoryListContainer.bind(this));
+      }
+    
+
+    render(){
+        return (
         <div className = 'page'>
             <BackHeader routeTo = '/' />
             <div className = 'header-container'>
@@ -60,41 +118,8 @@ export const CategoryBrowse: React.SFC<CategoryBrowseProps> = (props) => {
                     What do you want to know about?
                 </div>
             </div>
-            <div className = 'category-list-container'>
-                <CategoryButton
-                    category = 'Sexual Health'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Sex'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'LGBTQ'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Relationships'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Condoms, Dental Dams, and Protection'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Consent'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Birth Control'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Periods'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Pregnancy'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'STIs'
-                    routeTo = '/'/>
-                <CategoryButton
-                    category = 'Butt Stuff'
-                    routeTo = '/'/>
-            </div>
+            <CategoryListContainer width={this.state.width}/>
         </div>
-    )
+        )
+    }
 }
