@@ -143,10 +143,18 @@
 }
 
 // override nuka-carousel css so that 
-// carousel takes up full space
+// carousel takes up full space 
+// and pips do not get in the way on smaller screens
 .landing-carousel-container .slider {
   height: 100% !important;
 }
 .landing-carousel-container .slider-frame {
   height: 100% !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+}
+// scooch pips out of way of questions
+.landing-carousel-container .slider-control-bottomcenter {
+  height: 20%;
 }
