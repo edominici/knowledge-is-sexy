@@ -45,14 +45,13 @@ const CategoryButton: React.SFC<CategoryButtonProps> = (props) => {
     const encodedCategoryStr = encodeURIComponent(props.category);
     return(
         <div className = 'category-button-container'>
-            <div className = 'category-button-icon-container'>
             <Link to={{
                 pathname: props.routeTo,
                 search: `?c=${encodedCategoryStr}`
                 }}>
-                {props.icon}
-            </Link>
+            <div className = 'category-button-icon-container'>
             </div>
+            </Link>
             <div className = 'category-button-text'>
                 {QuestionCategory[props.category].toLowerCase().replace(/^(.)|\s(.)/g, ($1:any) => $1.toUpperCase())}
             </div>
