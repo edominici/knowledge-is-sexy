@@ -13,6 +13,7 @@ interface LandingProps extends RouteComponentProps<void> {
 }
 
 interface LandingState {
+  shouldNavigateToBrowsePage: boolean
   shouldNavigateToSearchPage: boolean
   searchString: string
   popularQuestions: Question[]
@@ -24,6 +25,7 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
     super(props);
     this.state = {
       popularQuestions: [],
+      shouldNavigateToBrowsePage: false,
       shouldNavigateToSearchPage: false,
       searchString: ''
     }
@@ -44,6 +46,11 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
       return <Redirect push to={{
         pathname: '/search',
         search: `?q=${encodedSearchStr}`
+      }} />
+    } 
+    if (this.state.shouldNavigateToBrowsePage) {
+      return <Redirect push to={{
+        pathname: '/browse',
       }} />
     } 
     return (
@@ -107,7 +114,10 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
               })}
             </Carousel>
           </div>
-          <button className='browse-questions-button'>
+          <button 
+            onClick={this.handleBrowseQuestionsClick}
+            className='browse-questions-button'
+          >
             Browse more questions
           </button>
         </div>
@@ -124,6 +134,12 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
   private handleSearchSubmit = (ev: React.MouseEvent<HTMLButtonElement>) => {
     this.setState({
       shouldNavigateToSearchPage: true
-    })
+    });
+  }
+
+  private handleBrowseQuestionsClick: React.MouseEventHandler<HTMLButtonElement> = (ev) => {
+    this.setState({
+      shouldNavigateToBrowsePage: true
+    });
   }
 }
