@@ -108,7 +108,7 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
             </Carousel>
           </div>
           <button className='browse-questions-button'>
-            Browse questions
+            Browse more questions
           </button>
         </div>
       </div>
