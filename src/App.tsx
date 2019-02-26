@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Landing } from './landing';
 import { QuestionPage } from './question-page';
 import { QuestionSearch } from './question-search';
-//import { QuestionBrowse } from './question-browse';
+import { QuestionBrowse } from './question-browse';
 import { CategoryBrowse } from './category-browse';
 import { AskExpert } from './ask-expert';
 
