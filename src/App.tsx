@@ -1,6 +1,20 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+// Initialize Data Access object
+import { initializeApp } from 'firebase';
+const config = {
+  apiKey: "AIzaSyDVnTgM2MgLEs0Z1GgNlaYxxI_vhRngsoA",
+  authDomain: "knowledge-is-sexy-8b277.firebaseapp.com",
+  databaseURL: "https://knowledge-is-sexy-8b277.firebaseio.com",
+  projectId: "knowledge-is-sexy-8b277",
+  storageBucket: "knowledge-is-sexy-8b277.appspot.com",
+  messagingSenderId: "736324680308"
+};
+const app = initializeApp(config);
+import { DataAccess } from './shared/data-access';
+const dao = DataAccess.initialize(app.auth);
+
 import { Landing } from './landing';
 import { QuestionPage } from './question-page';
 import { QuestionSearch } from './question-search';

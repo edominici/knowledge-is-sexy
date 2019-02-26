@@ -1,3 +1,7 @@
+import { auth } from 'firebase/app';
+type FirebaseAuthAccessor = () => auth.Auth;
+
+import { parse } from 'papaparse';
 import algoliasearch from 'algoliasearch';
 // this is a public key that enables searching the app's algolia index. It's safe to share with the client.
 const ALGOLIA_SEARCH_API_KEY = '7a9d5fa02059e413c7bafc46c435fa05';
@@ -6,18 +10,6 @@ const INDEX_NAME = 'dev_Questions';
 const client = algoliasearch(APP_ID, ALGOLIA_SEARCH_API_KEY);
 const algoliaIndex = client.initIndex(INDEX_NAME);
 
-import { parse } from 'papaparse';
-
-import * as firebase from 'firebase';
-const config = {
-  apiKey: "AIzaSyDVnTgM2MgLEs0Z1GgNlaYxxI_vhRngsoA",
-  authDomain: "knowledge-is-sexy-8b277.firebaseapp.com",
-  databaseURL: "https://knowledge-is-sexy-8b277.firebaseio.com",
-  projectId: "knowledge-is-sexy-8b277",
-  storageBucket: "knowledge-is-sexy-8b277.appspot.com",
-  messagingSenderId: "736324680308"
-};
-firebase.initializeApp(config);
 
 import { Question } from '../shared/types';
 import { QuestionCategory } from '../shared/enums'
@@ -31,14 +23,38 @@ import { QuestionCategory } from '../shared/enums'
  */
 export class DataAccess {
 
-  public static userNotLoggedInErr = 'User not logged in';
-  public static invalidEmailErr = 'auth/invalid-email';
-  public static weakPasswordErr = 'auth/weak-password';
-  public static wrongPasswordErr = 'auth/wrong-password';
-  public static userDisabledErr = 'auth/user-disabled';
-  public static userNotFoundErr = 'auth/user-not-found';
-  public static emailAlreadyInUseErr = 'auth/email-already-in-use';
-  public static requiresRecentLoginErr = 'auth/requires-recent-login';
+  public static readonly userNotLoggedInErr = 'User not logged in';
+  public static readonly invalidEmailErr = 'auth/invalid-email';
+  public static readonly weakPasswordErr = 'auth/weak-password';
+  public static readonly wrongPasswordErr = 'auth/wrong-password';
+  public static readonly userDisabledErr = 'auth/user-disabled';
+  public static readonly userNotFoundErr = 'auth/user-not-found';
+  public static readonly emailAlreadyInUseErr = 'auth/email-already-in-use';
+  public static readonly requiresRecentLoginErr = 'auth/requires-recent-login';
+
+  public static initialize = (auth: FirebaseAuthAccessor): DataAccess | null => {
+    if (!DataAccess.instance) {
+      DataAccess.instance = new DataAccess(auth);
+      return DataAccess.instance;
+    } else {
+      return null;
+    }
+  }
+
+  public static getInstance = (): DataAccess | null => {
+    if (DataAccess.instance) {
+      return DataAccess.instance;
+    } else {
+      return null;
+    }
+  }
+
+  private static instance: DataAccess | null = null;
+  private auth: FirebaseAuthAccessor;
+
+  private constructor(auth: FirebaseAuthAccessor) {
+    this.auth = auth;
+  }
 
   /**
    * USER AUTHENTICATION AND ACCOUNTS
@@ -48,9 +64,9 @@ export class DataAccess {
   // If account creation is successful, it attempts to send an email verification email.
   // If email verification is sent, the promise will resolve with the value 'true', otherwise 'false'.
   // If account creation is successful, user is signed in automatically.
-  public static createAccount = (email: string, password: string): Promise<boolean> => {
+  public createAccount = (email: string, password: string): Promise<boolean> => {
     return new Promise( (resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      this.auth().createUserWithEmailAndPassword(email, password)
         .then( (userCredential) => {
           if (!userCredential.user) {
             reject('User not initialized');
@@ -73,9 +89,9 @@ export class DataAccess {
     });
   }
 
-  public static deleteAccount = (): Promise<void> => {
+  public deleteAccount = (): Promise<void> => {
     return new Promise( (resolve, reject) => {
-      firebase.auth().onAuthStateChanged( user => {
+      this.auth().onAuthStateChanged( user => {
         if (!user) {
           // user is not signed in
           reject(DataAccess.userNotLoggedInErr);
@@ -94,9 +110,9 @@ export class DataAccess {
     });
   }
 
-  public static changePassword = (newPassword: string): Promise<void> => {
+  public changePassword = (newPassword: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
-      firebase.auth().onAuthStateChanged( user => {
+      this.auth().onAuthStateChanged( user => {
         if (!user) {
           // user is not signed in
           reject(DataAccess.userNotLoggedInErr);
@@ -127,9 +143,9 @@ export class DataAccess {
     })
   }
 
-  public static changeEmail = (newEmail: string): Promise<void> => {
+  public changeEmail = (newEmail: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
-      firebase.auth().onAuthStateChanged( user => {
+      this.auth().onAuthStateChanged( user => {
         if (!user) {
           // failed - user is not signed in
           reject(DataAccess.userNotLoggedInErr);
@@ -163,9 +179,9 @@ export class DataAccess {
     })
   }
 
-  public static logIn = (email: string, password: string): Promise<void> => {
+  public logIn = (email: string, password: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
-      firebase.auth().signInWithEmailAndPassword(email, password)
+      this.auth().signInWithEmailAndPassword(email, password)
         .then( () => {
           // success -- user signed in
           resolve();
@@ -191,33 +207,33 @@ export class DataAccess {
     });
   }
 
-  public static logOut = (): Promise<void> => {
-    return firebase.auth().signOut(); 
+  public logOut = (): Promise<void> => {
+    return this.auth().signOut(); 
   }
 
   /**
    * SITE API
    */
-  public static getPopularQuestions = (count: number): Promise<Question[]> => {
+  public getPopularQuestions = (count: number): Promise<Question[]> => {
     // FIXME this is a mock implementation that returns a random set of questions
     return new Promise( (resolve, reject) => {
-      DataAccess.awaitQuestionsLoaded().then( questions => {
+      this.awaitQuestionsLoaded().then( questions => {
         resolve(questions.slice(0, count));
       })
     });
   }
 
-  public static getQuestionsInCategory = (category: QuestionCategory): Promise<Question[]> => {
+  public getQuestionsInCategory = (category: QuestionCategory): Promise<Question[]> => {
     const isInCategory = (q: Question) => q.categories.indexOf(category) !== -1;
     return new Promise( (resolve, reject) => {
-      DataAccess.awaitQuestionsLoaded().then( questions => {
+      this.awaitQuestionsLoaded().then( questions => {
         const questionsInCategory = questions.filter(isInCategory);
         resolve(questionsInCategory);
       });
     });
   }
 
-  public static getQuestionsBySearchString = (searchString: string): Promise<Question[]> => {
+  public getQuestionsBySearchString = (searchString: string): Promise<Question[]> => {
     return new Promise( (resolve, reject) => {
       algoliaIndex.search({query: searchString}, (err: any, content: any): any => {
         if (err) {
@@ -229,9 +245,9 @@ export class DataAccess {
     });
   }
 
-  public static getQuestionById = (id: string): Promise<Question | null> => {
+  public getQuestionById = (id: string): Promise<Question | null> => {
     return new Promise( (resolve, reject) => {
-      DataAccess.awaitQuestionsLoaded().then( questions => {
+      this.awaitQuestionsLoaded().then( questions => {
         const matchingQuestion = questions.find( q => q.id === id);
         if (matchingQuestion === undefined) {
           resolve(null);
@@ -249,7 +265,7 @@ export class DataAccess {
   /**
    * loadAllQuestions makes a network request for all questions from the backend.
    */
-  private static loadAllQuestions = (): Promise<Question[]> => {
+  private loadAllQuestions = (): Promise<Question[]> => {
     const GOOGLE_SHEETS_QUESTIONS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSZ3Ag8K_d4V3rzBf9pXQ5J9GInmj9VCeNknjuV_S9sO-yqZOzCg1gbQt3UHdthqXOL24v0Fw4fPrFy/pub?output=csv';
     interface RawGoogleSheetsQuestion {
       id: string
@@ -284,7 +300,7 @@ export class DataAccess {
     });
   }
 
-  private static awaitQuestionsLoaded = (): Promise<Question[]> => {
+  private awaitQuestionsLoaded = (): Promise<Question[]> => {
     // if we already loaded the questions, return those
     if (DataAccess.allQuestions !== undefined) {
       return Promise.resolve(DataAccess.allQuestions);
@@ -295,7 +311,7 @@ export class DataAccess {
     // otherwise, initiate a network request for the questions.
     } else {
       DataAccess.questionsRequestInFlight = true;
-      DataAccess.questionsRequest = DataAccess.loadAllQuestions().then( allQuestions => {
+      DataAccess.questionsRequest = this.loadAllQuestions().then( allQuestions => {
         DataAccess.questionsRequestInFlight = false;
         DataAccess.allQuestions = allQuestions;
         return DataAccess.allQuestions;
