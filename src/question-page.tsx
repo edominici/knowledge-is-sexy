@@ -20,16 +20,23 @@ interface QuestionPageState {
 
 export class QuestionPage extends React.Component<QuestionPageProps, QuestionPageState> {
 
+  private dao: DataAccess;
+
   constructor(props: QuestionPageProps) {
     super(props);
     this.state = {
       question: null
     }
+    const dao = DataAccess.getInstance();
+    if (!dao) {
+      throw new Error('Data Access Object uninitialized!');
+    }
+    this.dao = dao;
   }
 
   componentWillMount() {
     const questionId = this.props.match.params.id;
-    DataAccess.getQuestionById(questionId).then( question => {
+    this.dao.getQuestionById(questionId).then( question => {
       this.setState({question: question});
     });
   }

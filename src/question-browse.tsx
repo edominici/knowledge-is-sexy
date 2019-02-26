@@ -4,8 +4,9 @@ import { RouteComponentProps, Redirect } from 'react-router-dom';
 import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
 import { QuestionListElement } from './question-list-element'
-import { DataAccess } from './shared/data-access';
 import { BackHeader } from './shared/components';
+
+import { DataAccess } from './shared/data-access';
 
 import './question-search.scss';
 
@@ -25,6 +26,8 @@ const NUM_POPULAR_QUESTIONS_TO_FETCH = 50;
 
 export class QuestionBrowse extends React.Component<QuestionBrowseProps, QuestionBrowseState> {
 
+  private dao: DataAccess;
+
   constructor(props: QuestionBrowseProps) {
     super(props);
     // remove '?q=' at start of string
@@ -37,17 +40,22 @@ export class QuestionBrowse extends React.Component<QuestionBrowseProps, Questio
       questions: props.defaultQuestions? props.defaultQuestions : [],
       navigateToAskExpertPage: false
     }
+    const dao = DataAccess.getInstance();
+    if (!dao) {
+      throw new Error('Data Access Object uninitialized!');
+    }
+    this.dao = dao;
   }
 
   componentWillMount() {
     // If there is a search string, find and display the questions that match the search string.
     // Otherwise, display a list of the most popular questions.
     if (this.state.searchString) {
-      DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+      this.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
         this.setState({questions: questions});
       });
     } else {
-      DataAccess.getPopularQuestions(NUM_POPULAR_QUESTIONS_TO_FETCH).then( questions => {
+      this.dao.getPopularQuestions(NUM_POPULAR_QUESTIONS_TO_FETCH).then( questions => {
         this.setState({questions: questions});
       })
     }
@@ -116,7 +124,7 @@ export class QuestionBrowse extends React.Component<QuestionBrowseProps, Questio
   }
 
   private handleSearchSubmit = (ev: any) => {
-    DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+    this.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
       const searchStringUrl = encodeURIComponent(this.state.searchString);
       this.props.history.push(`/search?q=${searchStringUrl}`);
       this.setState({questions: questions});
@@ -133,7 +141,5 @@ export class QuestionBrowse extends React.Component<QuestionBrowseProps, Questio
     this.setState({
       navigateToAskExpertPage: true
     })
-
   }
-
 }

@@ -41,15 +41,22 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
       questions: [],
       navigateToAskExpertPage: false,
     }
+    const dao = DataAccess.getInstance();
+    if (!dao) {
+      throw new Error('Data Access Object uninitialized!');
+    }
+    this.dao = dao;
   }
+
+  private dao: DataAccess;
 
   componentWillMount() {
     if(this.state.queryPrefix === "?c="){
-      DataAccess.getQuestionsInCategory(QuestionCategory[this.state.searchString]).then( questions => {
+      this.dao.getQuestionsInCategory(QuestionCategory[this.state.searchString]).then( questions => {
         this.setState({questions: questions});
       });
     }else{
-      DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+      this.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
         this.setState({questions: questions});
       });
     }
@@ -118,7 +125,7 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
   }
 
   private handleSearchSubmit = (ev: any) => {
-    DataAccess.getQuestionsBySearchString(this.state.searchString).then( questions => {
+    this.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
       const searchStringUrl = encodeURIComponent(this.state.searchString);
       this.props.history.push(`/search?q=${searchStringUrl}`);
       this.setState({questions: questions});

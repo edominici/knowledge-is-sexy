@@ -21,6 +21,8 @@ interface LandingState {
 
 export class Landing extends React.PureComponent<LandingProps, LandingState> {
 
+  private dao: DataAccess;
+
   constructor(props: LandingProps) {
     super(props);
     this.state = {
@@ -29,11 +31,16 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
       shouldNavigateToSearchPage: false,
       searchString: ''
     }
+    const dao = DataAccess.getInstance();
+    if (!dao) {
+      throw new Error('Data Access Object uninitialized!');
+    }
+    this.dao = dao;
   }
 
   componentWillMount() {
     // fetch popular questions
-    DataAccess.getPopularQuestions(5).then( questions => {
+    this.dao.getPopularQuestions(5).then( questions => {
       this.setState({
         popularQuestions: questions
       })
@@ -142,5 +149,4 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
       shouldNavigateToBrowsePage: true
     });
   }
-
 }

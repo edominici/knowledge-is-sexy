@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+// ------------------------ 
+// Data Access object
+// ------------------------
 // Initialize Data Access object
 import { initializeApp } from 'firebase';
 const config = {
@@ -12,8 +15,10 @@ const config = {
   messagingSenderId: "736324680308"
 };
 const app = initializeApp(config);
+
 import { DataAccess } from './shared/data-access';
-const dao = DataAccess.initialize(app.auth);
+DataAccess.initialize(app.auth);
+// -------------------------
 
 import { Landing } from './landing';
 import { QuestionPage } from './question-page';

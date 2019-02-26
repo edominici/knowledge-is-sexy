@@ -32,12 +32,12 @@ export class DataAccess {
   public static readonly emailAlreadyInUseErr = 'auth/email-already-in-use';
   public static readonly requiresRecentLoginErr = 'auth/requires-recent-login';
 
-  public static initialize = (auth: FirebaseAuthAccessor): DataAccess | null => {
+  public static initialize = (auth: FirebaseAuthAccessor): DataAccess => {
     if (!DataAccess.instance) {
       DataAccess.instance = new DataAccess(auth);
       return DataAccess.instance;
     } else {
-      return null;
+      throw new Error('DataAccess already initialized!')
     }
   }
 
