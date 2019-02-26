@@ -89,7 +89,7 @@ export class DataAccess {
     });
   }
 
-  public deleteAccount = (): Promise<void> => {
+  public deleteAccount = (password: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
       this.auth().onAuthStateChanged( user => {
         if (!user) {
@@ -110,7 +110,7 @@ export class DataAccess {
     });
   }
 
-  public changePassword = (newPassword: string): Promise<void> => {
+  public changePassword = (newPassword: string, oldPassword: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
       this.auth().onAuthStateChanged( user => {
         if (!user) {
@@ -143,7 +143,7 @@ export class DataAccess {
     })
   }
 
-  public changeEmail = (newEmail: string): Promise<void> => {
+  public changeEmail = (newEmail: string, password: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
       this.auth().onAuthStateChanged( user => {
         if (!user) {
