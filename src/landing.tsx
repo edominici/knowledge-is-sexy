@@ -142,4 +142,5 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
       shouldNavigateToBrowsePage: true
     });
   }
+
 }
