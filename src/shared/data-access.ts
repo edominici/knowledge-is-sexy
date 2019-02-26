@@ -8,6 +8,17 @@ const algoliaIndex = client.initIndex(INDEX_NAME);
 
 import { parse } from 'papaparse';
 
+import * as firebase from 'firebase';
+const config = {
+  apiKey: "AIzaSyDVnTgM2MgLEs0Z1GgNlaYxxI_vhRngsoA",
+  authDomain: "knowledge-is-sexy-8b277.firebaseapp.com",
+  databaseURL: "https://knowledge-is-sexy-8b277.firebaseio.com",
+  projectId: "knowledge-is-sexy-8b277",
+  storageBucket: "knowledge-is-sexy-8b277.appspot.com",
+  messagingSenderId: "736324680308"
+};
+firebase.initializeApp(config);
+
 import { Question } from '../shared/types';
 import { QuestionCategory } from '../shared/enums'
 
@@ -20,6 +31,173 @@ import { QuestionCategory } from '../shared/enums'
  */
 export class DataAccess {
 
+  public static userNotLoggedInErr = 'User not logged in';
+  public static invalidEmailErr = 'auth/invalid-email';
+  public static weakPasswordErr = 'auth/weak-password';
+  public static wrongPasswordErr = 'auth/wrong-password';
+  public static userDisabledErr = 'auth/user-disabled';
+  public static userNotFoundErr = 'auth/user-not-found';
+  public static emailAlreadyInUseErr = 'auth/email-already-in-use';
+  public static requiresRecentLoginErr = 'auth/requires-recent-login';
+
+  /**
+   * USER AUTHENTICATION AND ACCOUNTS
+   */
+  
+  // createAccount attempts to create an account with the user's email and password. 
+  // If account creation is successful, it attempts to send an email verification email.
+  // If email verification is sent, the promise will resolve with the value 'true', otherwise 'false'.
+  // If account creation is successful, user is signed in automatically.
+  public static createAccount = (email: string, password: string): Promise<boolean> => {
+    return new Promise( (resolve, reject) => {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then( (userCredential) => {
+          if (!userCredential.user) {
+            reject('User not initialized');
+          } else {
+            // user successfully signed up and logged in.
+            // sending email verification.
+            userCredential.user.sendEmailVerification().then( () => {
+              // email sent.
+              resolve(true);
+            }).catch( err => {
+              // email not sent.
+              // FIXME(mpingram) how to handle this condition?
+              resolve(false);
+            });
+          }
+        }).catch( (err) => {
+          console.error(err.message);
+          reject(err.message);
+      });
+    });
+  }
+
+  public static deleteAccount = (): Promise<void> => {
+    return new Promise( (resolve, reject) => {
+      firebase.auth().onAuthStateChanged( user => {
+        if (!user) {
+          // user is not signed in
+          reject(DataAccess.userNotLoggedInErr);
+        } else {
+          user.delete().then( () => {
+            resolve();
+          }).catch( err => {
+            if (err.code === 'auth/requires-recent-login') {
+              // user needs to reauthenticate
+              reject(DataAccess.requiresRecentLoginErr);
+            }
+            reject(err);
+          });
+        }
+      });
+    });
+  }
+
+  public static changePassword = (newPassword: string): Promise<void> => {
+    return new Promise( (resolve, reject) => {
+      firebase.auth().onAuthStateChanged( user => {
+        if (!user) {
+          // user is not signed in
+          reject(DataAccess.userNotLoggedInErr);
+        } else {
+          user.updatePassword(newPassword).catch( err => {
+            switch(err) {
+              // operation failed - password is too weak
+              case 'auth/weak-password':
+                reject(DataAccess.weakPasswordErr);
+                break;
+              // operation failed - user needs to reauthenticate
+              case 'auth/requires-recent-login':
+                reject(DataAccess.requiresRecentLoginErr);
+                break;
+              // operation failed - unhandled reason
+              // (This should never happen)
+              default:
+                console.error('Unhandled error:');
+                console.error(err);
+                break;
+            }
+          }).then( () => {
+            // operation succeeded -- password updated.
+            resolve();
+          });
+        }
+      });
+    })
+  }
+
+  public static changeEmail = (newEmail: string): Promise<void> => {
+    return new Promise( (resolve, reject) => {
+      firebase.auth().onAuthStateChanged( user => {
+        if (!user) {
+          // failed - user is not signed in
+          reject(DataAccess.userNotLoggedInErr);
+        } else {
+          user.updateEmail(newEmail).catch( err => {
+            switch(err) {
+              // failed - email is invalid
+              case 'auth/invalid-email':
+                reject(DataAccess.invalidEmailErr);
+                break;
+              // failed - email already in use
+              case 'auth/email-already-in-use':
+                reject(DataAccess.emailAlreadyInUseErr);
+                break;
+              // failed - user needs to reauthenticate
+              case 'auth/requires-recent-login':
+                reject(DataAccess.requiresRecentLoginErr);
+                break;
+              // failed - unhandled reason
+              // (This should never happen)
+              default:
+                console.error(`Unhandled error:\n${JSON.stringify(err)}`);
+                break;
+            }
+          }).then( () => {
+            // succeeded -- email sent to original email address. Firebase has it from here.
+            resolve();
+          });
+        }
+      });
+    })
+  }
+
+  public static logIn = (email: string, password: string): Promise<void> => {
+    return new Promise( (resolve, reject) => {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then( () => {
+          // success -- user signed in
+          resolve();
+        }).catch( err => {
+          switch(err) {
+            case 'auth/wrong-password':
+              reject(DataAccess.wrongPasswordErr);
+              break;
+            case 'auth/invalid-email':
+              reject(DataAccess.invalidEmailErr);
+              break;
+            case 'auth/user-disabled':
+              reject(DataAccess.userDisabledErr);
+              break;
+            case 'auth/user-not-found':
+              reject(DataAccess.userNotFoundErr);
+              break;
+            default:
+              console.error(`Unhandled error:\n${JSON.stringify(err)}`);
+              reject(err);
+          }
+        })
+    });
+  }
+
+  public static logOut = (): Promise<void> => {
+    return firebase.auth().signOut(); 
+  }
+
+  /**
+   * SITE API
+   */
   public static getPopularQuestions = (count: number): Promise<Question[]> => {
     // FIXME this is a mock implementation that returns a random set of questions
     return new Promise( (resolve, reject) => {
