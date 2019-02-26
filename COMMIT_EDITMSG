@@ -1,5 +1,1 @@
-Implement question-ask page
-
-* Use formspree to email asked questions
-* Change SpeechBubble implementation to use children rather than
-specify text
+Add firebase dependency

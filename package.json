@@ -6,6 +6,7 @@
     "@types/algoliasearch": "^3.30.1",
     "@types/react-router-dom": "^4.2.6",
     "algoliasearch": "^3.30.0",
+    "firebase": "^5.8.4",
     "node-sass": "^4.10.0",
     "nuka-carousel": "^4.4.3",
     "papaparse": "^4.6.2",
