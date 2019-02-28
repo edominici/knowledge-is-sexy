@@ -2,6 +2,9 @@ COMMIT_EDITMSG
 node_modules/
 .env
 
+# dev server Firebase SDK key
+knowledge-is-sexy-dev-firebase-adminsdk-co3bq-fabb351a11.json
+
 # dependencies
 /node_modules
 

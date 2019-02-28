@@ -1,5 +1,6 @@
-import { auth } from 'firebase/app';
+import { auth }  from 'firebase/app';
 type FirebaseAuthAccessor = () => auth.Auth;
+type FirebaseCredentialFn = (email: string, password: string) => auth.AuthCredential;
 
 import { parse } from 'papaparse';
 import algoliasearch from 'algoliasearch';
@@ -31,10 +32,11 @@ export class DataAccess {
   public static readonly userNotFoundErr = 'auth/user-not-found';
   public static readonly emailAlreadyInUseErr = 'auth/email-already-in-use';
   public static readonly requiresRecentLoginErr = 'auth/requires-recent-login';
+  public static readonly operationNotAllowedErr = 'auth/operation-not-allowed';
 
-  public static initialize = (auth: FirebaseAuthAccessor): DataAccess => {
+  public static initialize = (auth: FirebaseAuthAccessor, getCredential: FirebaseCredentialFn): DataAccess => {
     if (!DataAccess.instance) {
-      DataAccess.instance = new DataAccess(auth);
+      DataAccess.instance = new DataAccess(auth, getCredential);
       return DataAccess.instance;
     } else {
       throw new Error('DataAccess already initialized!')
@@ -51,9 +53,11 @@ export class DataAccess {
 
   private static instance: DataAccess | null = null;
   private auth: FirebaseAuthAccessor;
+  private getCredential: FirebaseCredentialFn;
 
-  private constructor(auth: FirebaseAuthAccessor) {
+  private constructor(auth: FirebaseAuthAccessor, getCredential: FirebaseCredentialFn) {
     this.auth = auth;
+    this.getCredential = getCredential;
   }
 
   /**
@@ -61,64 +65,107 @@ export class DataAccess {
    */
   
   // createAccount attempts to create an account with the user's email and password. 
-  // If account creation is successful, it attempts to send an email verification email.
-  // If email verification is sent, the promise will resolve with the value 'true', otherwise 'false'.
   // If account creation is successful, user is signed in automatically.
-  public createAccount = (email: string, password: string): Promise<boolean> => {
+  public createAccount = (email: string, password: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
-      this.auth().createUserWithEmailAndPassword(email, password)
-        .then( (userCredential) => {
-          if (!userCredential.user) {
-            reject('User not initialized');
-          } else {
-            // user successfully signed up and logged in.
-            // sending email verification.
-            userCredential.user.sendEmailVerification().then( () => {
-              // email sent.
-              resolve(true);
-            }).catch( err => {
-              // email not sent.
-              // FIXME(mpingram) how to handle this condition?
-              resolve(false);
-            });
-          }
-        }).catch( (err) => {
-          console.error(err.message);
-          reject(err.message);
+      this.auth().createUserWithEmailAndPassword(email, password).then( () => {
+        resolve();
+      }).catch( (err) => {
+        switch(err.code) {
+          case 'auth/invalid-email':
+            reject(DataAccess.invalidEmailErr);
+            break;
+          case 'auth/email-already-in-use':
+            reject(DataAccess.emailAlreadyInUseErr);
+            break;
+          case 'auth/weak-password':
+            reject(DataAccess.weakPasswordErr);
+            break;
+          case 'auth/operationNotAllowed':
+            reject(DataAccess.operationNotAllowedErr);
+            break;
+          default:
+            reject(`Unhandled error:\n${JSON.stringify(err)}`);
+            break;
+        }
       });
     });
   }
 
-  public deleteAccount = (password: string): Promise<void> => {
+  // sendVerificationEmail sends a verification email to the currently logged in user.
+  // It fails with userNotLoggedInErr if there is no user logged in.
+  public sendVerificationEmail = (): Promise<void> => {
     return new Promise( (resolve, reject) => {
       this.auth().onAuthStateChanged( user => {
         if (!user) {
-          // user is not signed in
           reject(DataAccess.userNotLoggedInErr);
         } else {
-          user.delete().then( () => {
+          // FIXME(mpingram) add continue url
+          user.sendEmailVerification().then( () => {
             resolve();
           }).catch( err => {
-            if (err.code === 'auth/requires-recent-login') {
-              // user needs to reauthenticate
-              reject(DataAccess.requiresRecentLoginErr);
-            }
-            reject(err);
+            reject(`Unhandled err:\n${JSON.stringify(err)}`);
           });
         }
       });
     });
   }
 
-  public changePassword = (newPassword: string, oldPassword: string): Promise<void> => {
+  public deleteAccount = (password: string): Promise<void> => {
+    return new Promise( (resolve, reject) => {
+      const user = this.auth().currentUser;
+      if (!user) {
+        // user is not logged in
+        reject(DataAccess.userNotLoggedInErr);
+      } else {
+        // user is logged in
+        if (!user.email) {
+          console.error(`Unhandled error:\nUser email not found`);
+          reject(DataAccess.invalidEmailErr);
+        }
+        const cred = this.getCredential(user.email as string, password);
+        user.reauthenticateAndRetrieveDataWithCredential(cred).then( () => {
+          user.delete().then( () => {
+            resolve();
+          });
+        }).catch( err => {
+          switch(err.code) {
+            case 'auth/wrong-password':
+              reject(DataAccess.wrongPasswordErr);
+              break;
+            default:
+              reject(err);
+              console.error(`Unhandled error:\n${JSON.stringify(err)}`)
+              break;
+          }
+        });
+      }
+    });
+  }
+
+  public changePassword = (oldPassword: string, newPassword: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
       this.auth().onAuthStateChanged( user => {
         if (!user) {
-          // user is not signed in
+          // user is not logged in
           reject(DataAccess.userNotLoggedInErr);
         } else {
-          user.updatePassword(newPassword).catch( err => {
-            switch(err) {
+          // user is logged in
+          if (!user.email) {
+            // user's email is somehow missing
+            console.error(`Unhandled error:\nUser email not found`);
+            reject(DataAccess.invalidEmailErr);
+          }
+          const cred = this.getCredential(user.email as string, oldPassword);
+          user.reauthenticateAndRetrieveDataWithCredential(cred).then( () => {
+            user.updatePassword(newPassword).then( () => {
+              resolve();
+            });
+          }).catch( err => {
+            switch(err.code) {
+              case 'auth/wrong-password':
+                reject(DataAccess.wrongPasswordErr);
+                break;
               // operation failed - password is too weak
               case 'auth/weak-password':
                 reject(DataAccess.weakPasswordErr);
@@ -130,49 +177,55 @@ export class DataAccess {
               // operation failed - unhandled reason
               // (This should never happen)
               default:
-                console.error('Unhandled error:');
-                console.error(err);
+                console.error(`Unhandled error:\n${JSON.stringify(err)}`);
+                reject(err);
                 break;
             }
-          }).then( () => {
-            // operation succeeded -- password updated.
-            resolve();
           });
         }
       });
-    })
+    });
   }
 
-  public changeEmail = (newEmail: string, password: string): Promise<void> => {
+  public changeEmail = (password: string, newEmail: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
       this.auth().onAuthStateChanged( user => {
         if (!user) {
           // failed - user is not signed in
           reject(DataAccess.userNotLoggedInErr);
         } else {
-          user.updateEmail(newEmail).catch( err => {
-            switch(err) {
-              // failed - email is invalid
-              case 'auth/invalid-email':
-                reject(DataAccess.invalidEmailErr);
-                break;
-              // failed - email already in use
-              case 'auth/email-already-in-use':
-                reject(DataAccess.emailAlreadyInUseErr);
-                break;
-              // failed - user needs to reauthenticate
-              case 'auth/requires-recent-login':
-                reject(DataAccess.requiresRecentLoginErr);
-                break;
-              // failed - unhandled reason
-              // (This should never happen)
-              default:
-                console.error(`Unhandled error:\n${JSON.stringify(err)}`);
-                break;
-            }
-          }).then( () => {
-            // succeeded -- email sent to original email address. Firebase has it from here.
-            resolve();
+          // user is signed in
+          if (!user.email) {
+            // user's email is somehow missing
+            console.error(`Unhandled error:\nUser email not found`);
+            reject(DataAccess.invalidEmailErr);
+          }
+          const cred = this.getCredential(user.email as string, password);
+          user.reauthenticateAndRetrieveDataWithCredential(cred).then( () => {
+            user.updateEmail(newEmail).then( () => {
+              resolve();
+            }).catch( err => {
+              switch(err.code) {
+                // failed - email is invalid
+                case 'auth/invalid-email':
+                  reject(DataAccess.invalidEmailErr);
+                  break;
+                // failed - email already in use
+                case 'auth/email-already-in-use':
+                  reject(DataAccess.emailAlreadyInUseErr);
+                  break;
+                // failed - user needs to reauthenticate
+                case 'auth/requires-recent-login':
+                  reject(DataAccess.requiresRecentLoginErr);
+                  break;
+                // failed - unhandled reason
+                // (This should never happen)
+                default:
+                  console.error(`Unhandled error:\n${JSON.stringify(err)}`);
+                  reject(err);
+                  break;
+              }
+            })
           });
         }
       });
@@ -181,12 +234,11 @@ export class DataAccess {
 
   public logIn = (email: string, password: string): Promise<void> => {
     return new Promise( (resolve, reject) => {
-      this.auth().signInWithEmailAndPassword(email, password)
-        .then( () => {
+      this.auth().signInWithEmailAndPassword(email, password).then( () => {
           // success -- user signed in
           resolve();
         }).catch( err => {
-          switch(err) {
+          switch(err.code) {
             case 'auth/wrong-password':
               reject(DataAccess.wrongPasswordErr);
               break;
