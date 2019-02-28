@@ -1,5 +1,4 @@
 @import '../../shared/styles/variables';
-@import '../../shared/styles/button';
 
 .search-bar-container {
 
@@ -29,6 +28,5 @@
 }
 
 .search-bar-submit-button {
-  @extend .button;
   flex: 0 0 40px;
 }

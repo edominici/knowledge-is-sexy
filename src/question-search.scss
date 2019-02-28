@@ -1,5 +1,4 @@
 @import 'src/shared/styles/variables';
-@import './shared/styles/button';
 
 $question-search-header-height: 10vh;
 
@@ -153,7 +152,6 @@ $question-search-header-height: 10vh;
 }
 
 .ask-expert-button {
-  @extend .button;
   padding: 6px;
   width: 60%;
   margin-bottom: 10px;

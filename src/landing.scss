@@ -2,40 +2,25 @@
 
 .landing-page {
   text-align: center;
+
   height: 100vh;
   width: 100vw;
-  background-color: $col-app-base;
-}
-
-.landing-header {
-  background: url('./shared/images/tiling-question-bg.svg'), $col-app-base;
-  background-size: 75px;
-  height: 38vh;
-  padding: 20px;
-
-  display: flex;
-  flex-direction: row;
-}
-
-.landing-logo-container {
-  max-width: 45vh;
-  width: 70vw;
-
-  margin: 0 auto;
-  padding: 10px 10px;
-  border-radius: 20px;
-  background-color: $col-app-neutral;
-  
-  box-shadow: $box-shadow-z2;
 
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+
+  background: url('./shared/images/tiling-question-bg.svg'), $col-app-base;
+  background-size: 60px;
+}
+
+.kis-hero {
+  flex: 0 0 auto;
+  box-shadow: 0px 3px 10px 0px rgba(0,0,0,0.2);;
 }
 
 .landing-title {
-  margin-bottom: 0.5em;
-  font-size: 145%;
-  font-weight: 900;
+  font-weight: bold;
   color: $col-app-base;
 }
 
@@ -43,51 +28,19 @@
   color: $col-app-accent;
 }
 
-.landing-logo {
-  height: 50px;
-  flex: 1 1 auto;
-}
-
-.landing-intro {
-  font-size: large;
-}
-
-.landing-search-bar-container {
-  width: 85vw;
-}
-
 .landing-content {
   border-radius: 24px 24px 0 0;
-
   box-shadow: 0px -3px 10px 0px rgba(0,0,0,0.2);;
-
-  padding: 0.5em;
-  width: 100%;
-  height: 100-38vh;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
   background-color: $col-app-neutral;
-}
 
-.content-text {
-  font-size: 130%;
-  font-weight: 400;
-  color: $col-text-gray;
-  margin: 0.5em 0 0.5em 0;
-}
+  flex: 1 1 100%;
 
-.content-text-accent {
-  font-weight: 700;
+  margin-top: 2em;
 }
 
 .divider {
   margin: 0 auto;
-  margin-top: 2em;
   color: $col-text-gray;
-
 }
 .divider-line {
   margin: 0 auto;
@@ -106,14 +59,8 @@
 }
 
 
-
 .landing-carousel-container {
-  height: 20vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  height: 100px;
 }
 
 .landing-carousel-control {
