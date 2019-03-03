@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { User } from './shared/types';
-import { DataAccess } from './shared/data-access';
-import { Navbar } from './shared/components/navbar';
-
 import './landing.scss';
 
 interface LandingProps {
-  dao: DataAccess
 }
 
 interface LandingState {
-  user?: User | null
-  signInTransition: boolean
   shouldNavigateToBrowsePage: boolean
   shouldNavigateToSearchPage: boolean
   searchString: string
@@ -24,21 +17,12 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
   constructor(props: LandingProps) {
     super(props);
     this.state = {
-      signInTransition: true,
       shouldNavigateToBrowsePage: false,
       shouldNavigateToSearchPage: false,
       searchString: ''
     }
   }
 
-  componentDidMount() {
-    this.props.dao.getUser().then( (user) => {
-      this.setState({
-        user: user,
-        signInTransition: false,
-      });
-    });
-  }
 
   public render() {
     if (this.state.shouldNavigateToSearchPage) {
@@ -56,12 +40,6 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
 
     return (
       <div className='landing-page'>
-
-        <Navbar 
-          user={this.state.user ? this.state.user : undefined} 
-          signInTransition={this.state.signInTransition}
-          handleSignOutClick={this.handleSignOutClick} 
-        />
 
         <section className='hero is-fullheight-with-navbar is-primary is-bold kis-hero'>
 
@@ -131,13 +109,4 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
   }
   */
 
-  private handleSignOutClick: React.MouseEventHandler<HTMLAnchorElement> = () => {
-    this.setState({signInTransition: true})
-    this.props.dao.logOut().then( () => {
-      this.setState({
-        user: null,
-        signInTransition: false
-      })
-    });
-  }
 }

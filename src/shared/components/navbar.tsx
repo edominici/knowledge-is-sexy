@@ -45,7 +45,6 @@ export const Navbar: React.SFC<NavbarProps> = props => {
     );
   // user is signed in
   } else {
-    console.log(props.user);
     navEndMarkup = (
       <div className='navbar-menu'>
         <div className='navbar-item has-dropdown is-hoverable'>
