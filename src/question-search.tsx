@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { RouteComponentProps, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
-import { SearchBar } from './shared/components'
 import { Question } from './shared/types';
 import { QuestionListElement } from './question-list-element'
 import { DataAccess } from './shared/data-access';
-import { BackHeader } from './shared/components';
 import { QuestionCategory } from './shared/enums/question-category';
 
 import './question-search.scss';
 
-export interface QuestionSearchParams {
-}
-interface QuestionSearchProps extends RouteComponentProps<QuestionSearchParams> {
+interface QuestionSearchProps {
+  // FIXME(mpingram) hacky workarounds for the React router typings
+  location?: any
+  history?: any
+  dao: DataAccess
 }
 
 interface QuestionSearchState {
@@ -41,22 +41,15 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
       questions: [],
       navigateToAskExpertPage: false,
     }
-    const dao = DataAccess.getInstance();
-    if (!dao) {
-      throw new Error('Data Access Object uninitialized!');
-    }
-    this.dao = dao;
   }
-
-  private dao: DataAccess;
 
   componentWillMount() {
     if(this.state.queryPrefix === "?c="){
-      this.dao.getQuestionsInCategory(QuestionCategory[this.state.searchString]).then( questions => {
+      this.props.dao.getQuestionsInCategory(QuestionCategory[this.state.searchString]).then( questions => {
         this.setState({questions: questions});
       });
     }else{
-      this.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
+      this.props.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
         this.setState({questions: questions});
       });
     }
@@ -73,14 +66,29 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
     }
     return (
       <div className='page'>
-        <BackHeader routeTo='/' />
         <div className='question-search-header'>
           <div className='header-search-bar-container'>
-            <SearchBar 
-              value={this.state.searchString}
-              onChange={this.handleSearchStringChange}
-              onSearchButtonClick={this.handleSearchSubmit} 
-            />
+
+            {/* Search bar */}
+            <div className='field is-large has-addons'>
+              <div className='control is-expanded'>
+                <input 
+                  className='input' 
+                  type='search'
+                  value={this.state.searchString}
+                  onChange={this.handleSearchStringChange}
+                />
+              </div>
+              <div className='control'>
+                <button 
+                  className='button is-info'
+                  onClick={this.handleSearchSubmit}
+                >
+                  Ask
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
         <div className='question-list-scroll-container'>
@@ -125,7 +133,7 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
   }
 
   private handleSearchSubmit = (ev: any) => {
-    this.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
+    this.props.dao.getQuestionsBySearchString(this.state.searchString).then( questions => {
       const searchStringUrl = encodeURIComponent(this.state.searchString);
       this.props.history.push(`/search?q=${searchStringUrl}`);
       this.setState({questions: questions});
