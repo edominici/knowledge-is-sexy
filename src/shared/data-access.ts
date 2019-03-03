@@ -12,7 +12,7 @@ const client = algoliasearch(APP_ID, ALGOLIA_SEARCH_API_KEY);
 const algoliaIndex = client.initIndex(INDEX_NAME);
 
 
-import { Question } from '../shared/types';
+import { Question, User } from '../shared/types';
 import { QuestionCategory } from '../shared/enums'
 
 /**
@@ -47,7 +47,7 @@ export class DataAccess {
     if (DataAccess.instance) {
       return DataAccess.instance;
     } else {
-      return null;
+      throw new Error('Data Access uninitialized!');
     }
   }
 
@@ -63,6 +63,23 @@ export class DataAccess {
   /**
    * USER AUTHENTICATION AND ACCOUNTS
    */
+
+  // getUser gets the currently logged-in user, or null if no user is logged in.
+  public getUser = (): Promise<User | null> => {
+    return new Promise( (resolve, reject) => {
+      this.auth().onAuthStateChanged( user => {
+        if (!user) {
+          resolve(null);
+        } else {
+          resolve({
+            displayName: user.displayName ? user.displayName : undefined,
+            photoURL: user.photoURL ? user.photoURL : undefined,
+            uid: user.uid
+          });
+        }
+      });
+    });
+  }
   
   // createAccount attempts to create an account with the user's email and password. 
   // If account creation is successful, user is signed in automatically.
@@ -260,7 +277,13 @@ export class DataAccess {
   }
 
   public logOut = (): Promise<void> => {
-    return this.auth().signOut(); 
+    return new Promise( (resolve, reject) => {
+      this.auth().signOut().then( () => {
+        resolve()
+      }).catch( err => {
+        reject(err);
+      })
+    });
   }
 
   /**

@@ -14,10 +14,10 @@ const config = {
   storageBucket: "knowledge-is-sexy-8b277.appspot.com",
   messagingSenderId: "736324680308"
 };
-const app = initializeApp(config);
+initializeApp(config);
 
 import { DataAccess } from './shared/data-access';
-DataAccess.initialize(app.auth, auth.EmailAuthProvider.credential);
+const dao = DataAccess.initialize(auth, auth.EmailAuthProvider.credential);
 // -------------------------
 
 import './App.scss';
@@ -34,7 +34,7 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path='/' exact={true} component={Landing} />
+        <Route path='/' exact={true} render={ () => <Landing dao={dao} /> } />
         <Route path='/signin' render={ () => <SignIn successURL='/' />} />
         <Route path='/search' component={QuestionSearch} />
         <Route path='/browse' component={QuestionBrowse} />

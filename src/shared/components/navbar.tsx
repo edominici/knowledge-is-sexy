@@ -1,25 +1,36 @@
 import * as React from 'react';
 
+import { User } from '../../shared/types';
+
 import defaultUserlogo from '../../shared/images/baseline-account_circle-24px.svg';
 import textOnlylogo from '../../shared/images/kis-logo-textonly.svg';
 
-// FIXME(mpingram) this is a stub for something that should be in DataAccess
-interface User {
-  firstname: string,
-  lastname: string,
-  profileImageURL?: string
-}
-
 interface NavbarProps {
   user?: User
-  handleSignOutClick?: React.MouseEventHandler<HTMLButtonElement>
+  handleSignOutClick?: React.MouseEventHandler<HTMLAnchorElement>
+  signInTransition?: boolean;
   //handleSignInClick: React.MouseEventHandler<HTMLButtonElement>
   //handleCreateAccountClick: React.MouseEventHandler<HTMLButtonElement>
 }
 export const Navbar: React.SFC<NavbarProps> = props => {
   
   let navEndMarkup;
-  if (!props.user) {
+  // user is currently being signed out or signed in
+  if (props.signInTransition) {
+    navEndMarkup = (
+      <div className='navbar-item'>
+        <div className='buttons'>
+          <a href='/signin' className='button is-loading is-primary'>
+            <strong>Sign up</strong>
+          </a>
+          <a href='/signin' className='button is-loading is-light'>
+            Log in
+          </a>
+        </div>
+      </div>
+    );
+  // user is not signed in
+  } else if (!props.user) {
     navEndMarkup = (
       <div className='navbar-item'>
         <div className='buttons'>
@@ -32,7 +43,9 @@ export const Navbar: React.SFC<NavbarProps> = props => {
         </div>
       </div>
     );
+  // user is signed in
   } else {
+    console.log(props.user);
     navEndMarkup = (
       <div className='navbar-menu'>
         <div className='navbar-item has-dropdown is-hoverable'>
@@ -41,12 +54,12 @@ export const Navbar: React.SFC<NavbarProps> = props => {
             <figure style={{margin: '0 0.25em'}} className='image is-rounded' >
               <img 
                 style={{width: '32px', height: '32px'}}
-                src={props.user.profileImageURL || defaultUserlogo} 
+                src={props.user.photoURL || defaultUserlogo} 
                 alt='User profile picture' 
               />
             </figure>
 
-            {props.user.firstname} {props.user.lastname}
+            {props.user.displayName}
           </div>
 
           <div className='navbar-dropdown'>
@@ -54,7 +67,10 @@ export const Navbar: React.SFC<NavbarProps> = props => {
               My account
             </a>
             <hr className='navbar-divider' />
-            <a className='navbar-item' >
+            <a 
+              className='navbar-item'
+              onClick={props.handleSignOutClick} 
+            >
               Sign out
             </a>
           </div>
@@ -102,10 +118,3 @@ export const Navbar: React.SFC<NavbarProps> = props => {
     </nav>
   )
 };
-
-Navbar.defaultProps = {
-  user: {
-    firstname: 'Greg',
-    lastname: 'Jones',
-  }
-}
