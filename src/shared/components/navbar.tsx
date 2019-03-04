@@ -80,7 +80,7 @@ export const Navbar: React.SFC<NavbarProps> = props => {
   }
 
   return (
-    <nav className='navbar is-gray' role='navigation' aria-label='main navigation'>
+    <nav className='navbar is-fixed-top is-gray' role='navigation' aria-label='main navigation'>
       <div className='navbar-brand'>
         <a className='navbar-item' href='/'>
           <img src={textOnlylogo} alt='Knowledge is Sexy logo'/>

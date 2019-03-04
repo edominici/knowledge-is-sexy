@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import { Question } from './shared/types';
-import { QuestionListElement } from './question-list-element'
 import { DataAccess } from './shared/data-access';
 import { QuestionCategory } from './shared/enums/question-category';
 
@@ -65,40 +64,47 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
       }} />
     }
     return (
-      <div className='page'>
-        <div className='question-search-header'>
-          <div className='header-search-bar-container'>
+      <div className='kis-fullheight' > 
 
-            {/* Search bar */}
-            <div className='field is-large has-addons'>
-              <div className='control is-expanded'>
-                <input 
-                  className='input' 
-                  type='search'
-                  value={this.state.searchString}
-                  onChange={this.handleSearchStringChange}
-                />
-              </div>
-              <div className='control'>
-                <button 
-                  className='button is-info'
-                  onClick={this.handleSearchSubmit}
-                >
-                  Ask
-                </button>
-              </div>
+        {/* Search bar */}
+        <div className='box is-marginless has-background-light' >
+          <div className='field is-large has-addons'>
+            <div className='control is-expanded'>
+              <input 
+                className='input' 
+                type='search'
+                value={this.state.searchString}
+                onChange={this.handleSearchStringChange}
+              />
             </div>
-
+            <div className='control'>
+              <button 
+                className='button is-info'
+                onClick={this.handleSearchSubmit}
+              >
+                Ask
+              </button>
+            </div>
           </div>
         </div>
-        <div className='question-list-scroll-container'>
-          <div className='question-list'>
+
+        {/* List of questions */}
+        <div style={{}} >
+          <div className='container'>
             {
             this.state.questions.slice(0, this.state.numQuestionsToDisplay).map( q => {
               return (
-                <div onClick={() => this.props.history.push(`/question/${q.id}`)} key={`question-${q.id}`} >
-                  <QuestionListElement headerText={q.question} bodyText={q.answer} />
-                </div>
+                <a 
+                  className='media' 
+                  key={`question-${q.id}`} 
+                  href={`/question/${q.id}`} 
+                >
+                  <div className='media-content'>
+                    <div className='content'>
+                      {q.question}
+                    </div>
+                  </div>
+                </a>  
               );
             })
             }
@@ -109,19 +115,22 @@ export class QuestionSearch extends React.Component<QuestionSearchProps, Questio
               </button>
             </div>
             }
-            <div className='question-list-footer'>
-                <div className='info-icon'>
-                  ?
-                </div>
-                <div className='header-text'>
-                  Doesn't answer your question?
-                </div>
-                <button className='ask-expert-button' onClick={this.handleAskExpertClick}>
-                  Ask an expert
-                </button>
-                </div>
-            </div>
           </div>
+        </div>
+
+
+        {/* Footer */}
+        <div className='question-list-footer'>
+          <div className='info-icon'>
+            ?
+          </div>
+          <div className='header-text'>
+            Doesn't answer your question?
+          </div>
+          <button className='ask-expert-button' onClick={this.handleAskExpertClick}>
+            Ask an expert
+          </button>
+        </div>
       </div>
     );
   }

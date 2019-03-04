@@ -20,8 +20,6 @@ import { DataAccess } from './shared/data-access';
 const dao = DataAccess.initialize(auth, auth.EmailAuthProvider.credential);
 // -------------------------
 
-import './App.scss'
-
 import { User } from './shared/types'; 
 
 import { Navbar } from './shared/components/navbar';

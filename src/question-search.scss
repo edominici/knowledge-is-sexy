@@ -2,23 +2,6 @@
 
 $question-search-header-height: 10vh;
 
-.question-search-header {
-  position: relative;
-  height: $question-search-header-height;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  box-shadow: $box-shadow-z2;
-}
-
-.header-search-bar-container {
-  width: 85vw;
-}
-
-
 .question-list-scroll-container {
   background-color: $col-app-neutral;
   width: 100%;
@@ -28,80 +11,6 @@ $question-search-header-height: 10vh;
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-}
-
-.question-list-element {
-  position: relative;
-  width: 100%;
-  height: 90px;
-  padding: 5px 0;
-  border-bottom: 1px solid $col-app-gray;
-
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
-
-
-  &:after {
-    position: absolute;
-    font-size: 170%;
-    color: $col-app-gray-light;
-    right: 10px;
-    top: 10px;
-    content: '>'
-  }
-}
-
-.question-list-element .circular-icon {
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
-  margin: 0 12px;
-  border-radius: 100%;
-  background-color: $col-app-gray;
-}
-.question-list-element .text-container {
-  height: 100%;
-  margin-right: 30px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-  
-.question-list-element .header-text, .question-list-element .body-text {
-  display: block;
-  width: auto;
-  text-align: left;
-  overflow: hidden;
-}
-
-.question-list-element .header-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex: 1 0 auto;
-  margin-bottom: 3px;
-}
-
-.question-list-element .body-text {
-  color: $col-text-gray;
-  flex: 1 1 auto;
-}
-
-.question-list-tail {
-  position: relative;
-  width: 100%;
-  height: 80px;
-  border-bottom: 1px solid $col-app-gray;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  flex-wrap: nowrap;
 }
 
 .more-questions-button {
