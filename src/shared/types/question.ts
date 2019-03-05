@@ -4,4 +4,5 @@ export interface Question {
   question: string
   tags: string[]
   answer: string
+  numUpvotes: number
 }

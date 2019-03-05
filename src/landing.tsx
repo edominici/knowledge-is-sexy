@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Redirect } from 'react-router-dom';
 
-import './landing.scss';
-
 interface LandingProps {
 }
 
@@ -39,53 +37,46 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
     } 
 
     return (
-      <div className='landing-page'>
+      <section className='hero is-fullheight-with-navbar has-text-centered is-primary is-bold'>
 
-        <section className='hero is-fullheight-with-navbar is-primary is-bold kis-hero'>
-
-          <div className='hero-body'>
-            <div className='container'>
-
-              {/*KIS title*/}
-              {/*FIXME(mpingram) correct desktop-is-x / mobile-is-x once you get internet*/}
-              <h1 className='title desktop-is-2 mobile-is-3 has-text-light landing-title'>
-                Knowledge Is&nbsp;<span className='landing-title-accent'>Sexy.</span>
-              </h1>
-              <h3 className='subtitle desktop-is-3 mobile-is-4'>
-                <strong>Ask questions</strong> about sex.
-                <br />
-                Get answers from <strong>the experts.</strong>
-              </h3>
-
-              {/*Search bar*/}
-              <div className='field is-large has-addons'>
-                <div className='control is-expanded'>
-                  <input 
-                    className='input' 
-                    type='search'
-                    value={this.state.searchString}
-                    onChange={this.handleSearchStringChange}
-                  />
-                </div>
-                <div className='control'>
-                  <button 
-                    className='button is-info'
-                    onClick={this.handleSearchSubmit}
-                  >
-                    Ask
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
+        <div className='hero-body'>
           <div className='container'>
+
+            {/*KIS title*/}
+            {/*FIXME(mpingram) correct desktop-is-x / mobile-is-x once you get internet*/}
+            <h1 className='title is-3 has-text-light landing-title'>
+              Knowledge Is&nbsp;<span className='has-text-info'>Sexy.</span>
+            </h1>
+            <h3 className='subtitle is-4'>
+              <strong>Ask questions</strong> about sex.
+              <br />
+              Get answers from <strong>the experts.</strong>
+            </h3>
+
+            {/*Search bar*/}
+            <div className='field is-large has-addons'>
+              <div className='control is-expanded'>
+                <input 
+                  className='input' 
+                  type='search'
+                  value={this.state.searchString}
+                  onChange={this.handleSearchStringChange}
+                />
+              </div>
+              <div className='control'>
+                <button 
+                  className='button is-info'
+                  onClick={this.handleSearchSubmit}
+                >
+                  Ask
+                </button>
+              </div>
+            </div>
+
           </div>
+        </div>
 
-        </section>
-
-      </div>
+      </section>
     );
   }
 

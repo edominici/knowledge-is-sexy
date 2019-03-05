@@ -309,12 +309,46 @@ export class DataAccess {
   }
 
   public getQuestionsBySearchString = (searchString: string): Promise<Question[]> => {
+
+    interface AlgoliaResult {
+      id: number,
+      objectID: string,
+      question: string,
+      answer: string,
+      tags: string,
+      topic: string
+    }
+    const toQuestion = (q: AlgoliaResult): Question => {
+      let tags: string[];
+      if (q.tags) {
+        tags = q.tags.split(',').map( tag => tag.trim() );
+      } else {
+        tags = [];
+      }
+
+      let categories: string[];
+      if (q.tags) {
+        categories = q.topic.split(',').map( topic => topic.trim() );
+      } else {
+        categories = [];
+      }
+
+      return {
+        id: q.id.toString(),
+        question: q.question,
+        answer: q.answer,
+        tags: tags,
+        categories: categories,
+        numUpvotes: 0
+      }
+    }
+
     return new Promise( (resolve, reject) => {
       algoliaIndex.search({query: searchString}, (err: any, content: any): any => {
         if (err) {
           reject(err);
         } else {
-          resolve(content.hits);
+          resolve(content.hits.map(toQuestion));
         }
       });
     });
@@ -350,12 +384,27 @@ export class DataAccess {
       answer: string
     }
     const toQuestion = (q: RawGoogleSheetsQuestion): Question => {
+      let tags: string[];
+      if (q.tags) {
+        tags = q.tags.split(',').map( tag => tag.trim() );
+      } else {
+        tags = [];
+      }
+
+      let categories: string[];
+      if (q.tags) {
+        categories = q.topic.split(',').map( topic => topic.trim() );
+      } else {
+        categories = [];
+      }
+
       return {
         id: q.id,
         question: q.question,
         answer: q.answer,
-        tags: q.tags.split(',').map( tag => tag.trim() ),
-        categories: q.topic.split(',').map( category => category.trim() )
+        tags: tags,
+        categories: categories,
+        numUpvotes: 0
       }
     }
     // parse (from papaparse) loads and parses a csv stream directly from a url.
