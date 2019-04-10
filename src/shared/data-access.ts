@@ -1,8 +1,19 @@
-import { auth }  from 'firebase/app';
+import { auth, initializeApp } from 'firebase';
+const config = {
+  // NOTE this is public and safe to share with client / store in version control
+  apiKey: "AIzaSyDVnTgM2MgLEs0Z1GgNlaYxxI_vhRngsoA",
+  authDomain: "knowledge-is-sexy-8b277.firebaseapp.com",
+  databaseURL: "https://knowledge-is-sexy-8b277.firebaseio.com",
+  projectId: "knowledge-is-sexy-8b277",
+  storageBucket: "knowledge-is-sexy-8b277.appspot.com",
+  messagingSenderId: "736324680308"
+};
+initializeApp(config);
+
 type FirebaseAuthAccessor = () => auth.Auth;
 type FirebaseCredentialFn = (email: string, password: string) => auth.AuthCredential;
 
-import { parse } from 'papaparse';
+
 import algoliasearch from 'algoliasearch';
 // this is a public key that enables searching the app's algolia index. It's safe to share with the client.
 const ALGOLIA_SEARCH_API_KEY = '7a9d5fa02059e413c7bafc46c435fa05';
@@ -10,6 +21,7 @@ const APP_ID = '1SO498QEWN';
 const INDEX_NAME = 'dev_Questions';
 const client = algoliasearch(APP_ID, ALGOLIA_SEARCH_API_KEY);
 const algoliaIndex = client.initIndex(INDEX_NAME);
+import { parse } from 'papaparse';
 
 
 import { Question, User } from '../shared/types';
@@ -35,20 +47,11 @@ export class DataAccess {
   public static readonly operationNotAllowedErr = 'auth/operation-not-allowed';
   public static readonly tooManyRequestsErr = 'auth/too-many-requests';
 
-  public static initialize = (auth: FirebaseAuthAccessor, getCredential: FirebaseCredentialFn): DataAccess => {
-    if (!DataAccess.instance) {
-      DataAccess.instance = new DataAccess(auth, getCredential);
-      return DataAccess.instance;
-    } else {
-      throw new Error('DataAccess already initialized!')
-    }
-  }
-
-  public static getInstance = (): DataAccess | null => {
+  public static getInstance = (): DataAccess => {
     if (DataAccess.instance) {
       return DataAccess.instance;
     } else {
-      throw new Error('Data Access uninitialized!');
+      return new DataAccess(auth, auth.EmailAuthProvider.credential)
     }
   }
 

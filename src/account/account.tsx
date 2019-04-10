@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Gender, Orientation } from '../shared/enums';
 
@@ -13,11 +14,6 @@ interface AccountProps {
   onOrientationChange: React.EventHandler<any>
 
   onSendVerificationEmailClick: React.EventHandler<any>
-
-  onChangeEmailClick: React.MouseEventHandler<any>
-  onChangePasswordClick: React.MouseEventHandler<any>
-  onDeleteAccountClick: React.MouseEventHandler<any>
-
 }
 
 const MOCK_PASSWORD = 'this-is-not-your-password';
@@ -87,12 +83,12 @@ export const Account: React.SFC<AccountProps> = props => {
               />
             </div>
             <div className='control'>
-                <button 
+                <Link 
                   className='button is-text'
-                  onClick={props.onChangeEmailClick}
+                  to='/account/change-email'
                 >
                   <i className='fas fa-edit' />
-                </button>
+                </Link>
             </div>
           </div>
         </div>
@@ -114,12 +110,12 @@ export const Account: React.SFC<AccountProps> = props => {
               />
             </div>
             <div className='control'>
-                <button 
+                <Link
                   className='button is-text'
-                  onClick={props.onChangePasswordClick}
+                  to='/account/change-password'
                 >
                   <i className='fas fa-edit' />
-                </button>
+                </Link>
             </div>
           </div>
         </div>
@@ -145,12 +141,12 @@ export const Account: React.SFC<AccountProps> = props => {
       <div className='level'>
         <div className='level-item field'>
           <div className='control'>
-            <button 
-              onClick={props.onDeleteAccountClick} 
+            <Link
               className='button is-text has-text-info'
+              to='/account/delete-account'
             >
               <span>Delete my account</span>
-            </button>
+            </Link>
           </div>
         </div>
       </div>

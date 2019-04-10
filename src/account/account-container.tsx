@@ -55,21 +55,17 @@ export class AccountContainer extends React.PureComponent<AccountContainerProps,
   render() {
     if (this.state.shouldRedirectToLanding) {
       return <Redirect push to='/' />
-    } else if (this.state.shouldRedirectToChangeEmail) {
-      return <Redirect push to='/account/change-email' />
-    } else if (this.state.shouldRedirectToChangePassword) {
-      return <Redirect push to='/account/change-password' />
-    } else if (this.state.shouldRedirectToDeleteAccount) {
-      return <Redirect push to='/account/delete-account' />
 
     } else if (this.state.isLoading) {
       return <div>FIXME: add a loading screen</div>
+
     } else if (this.state.user === null) {
       return <Redirect push to={{
           pathname: '/signin',
           state:  { next: '/account' }
         }}
       />
+
     } else {
       return (
         <Account
@@ -82,10 +78,6 @@ export class AccountContainer extends React.PureComponent<AccountContainerProps,
           onOrientationChange={this.handleOrientationChange}
 
           onSendVerificationEmailClick={this.handleSendVerificationEmailClick}
-
-          onChangeEmailClick={this.handleChangeEmailClick}
-          onChangePasswordClick={this.handleChangePasswordClick}
-          onDeleteAccountClick={this.handleDeleteAccountClick}
         />
       );
     }
@@ -97,24 +89,6 @@ export class AccountContainer extends React.PureComponent<AccountContainerProps,
 
   private handleOrientationChange = () => {
     console.warn('handleOrientationChange not implemented');
-  }
-
-  private handleChangeEmailClick = () => {
-    this.setState({
-      shouldRedirectToChangeEmail: true
-    })
-  }
-
-  private handleChangePasswordClick = () => {
-    this.setState({
-      shouldRedirectToChangePassword: true
-    })
-  }
-
-  private handleDeleteAccountClick = () => {
-    this.setState({
-      shouldRedirectToDeleteAccount: true
-    })
   }
 
   private handleSendVerificationEmailClick = () => {

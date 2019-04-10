@@ -1,24 +1,23 @@
 import * as React from 'react';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
-// ------------------------ 
-// Data Access object
-// ------------------------
-// Initialize Data Access object
-import { auth, initializeApp } from 'firebase';
-const config = {
-  apiKey: "AIzaSyDVnTgM2MgLEs0Z1GgNlaYxxI_vhRngsoA",
-  authDomain: "knowledge-is-sexy-8b277.firebaseapp.com",
-  databaseURL: "https://knowledge-is-sexy-8b277.firebaseio.com",
-  projectId: "knowledge-is-sexy-8b277",
-  storageBucket: "knowledge-is-sexy-8b277.appspot.com",
-  messagingSenderId: "736324680308"
-};
-initializeApp(config);
-
-import { DataAccess } from './shared/data-access';
-const dao = DataAccess.initialize(auth, auth.EmailAuthProvider.credential);
 // -------------------------
+// Redux Store
+// -------------------------
+import { rootReducer } from './shared/redux';
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__  || compose;
+const store = createStore(
+  rootReducer, 
+  composeEnhancers(
+    applyMiddleware(ReduxThunk)
+  )
+);
+
+const dao = DataAccess.getInstance();
+
 
 import { User } from './shared/types'; 
 
@@ -34,6 +33,7 @@ import { SignIn } from './signin';
 import { ChangeEmailContainer } from './account/change-email-container';
 import { ChangePasswordContainer } from './account/change-password-container';
 import { DeleteAccountContainer } from './account/delete-account-container';
+import { DataAccess } from './shared/data-access';
 
 interface AppProps {
 
@@ -61,7 +61,9 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   render(){
+    console.log(store.getState());
     return (
+      <Provider store={store} >
       <React.Fragment>
         <Navbar 
           user={this.state.user ? this.state.user : undefined}  
@@ -87,6 +89,7 @@ export class App extends React.Component<AppProps, AppState> {
           </Switch>
         </BrowserRouter>
       </React.Fragment>
+      </Provider>
     );
   }
 
