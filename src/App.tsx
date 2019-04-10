@@ -24,12 +24,16 @@ import { User } from './shared/types';
 
 import { Navbar } from './shared/components/navbar';
 import { Landing } from './landing';
+import { AccountContainer } from './account/account-container';
 import { QuestionPage } from './question-page';
 import { QuestionSearch } from './question-search';
 import { QuestionBrowse } from './question-browse';
 import { CategoryBrowse } from './category-browse';
 import { AskExpert } from './ask-expert';
 import { SignIn } from './signin';
+import { ChangeEmailContainer } from './account/change-email-container';
+import { ChangePasswordContainer } from './account/change-password-container';
+import { DeleteAccountContainer } from './account/delete-account-container';
 
 interface AppProps {
 
@@ -66,8 +70,14 @@ export class App extends React.Component<AppProps, AppState> {
         />
         <BrowserRouter>
           <Switch>
-            <Route path='/' exact={true} component={Landing} /> } />
-            <Route path='/signin' render={ () => <SignIn successURL='/' />} />
+            <Route path='/' exact component={Landing} /> } />
+            <Route path='/signin' render={ () => <SignIn next='/' />} />
+
+            <Route path='/account' exact render={ () => <AccountContainer dao={dao} />} />
+            <Route path='/account/change-email' render={ () => <ChangeEmailContainer dao={dao} />} />
+            <Route path='/account/change-password' render={ () => <ChangePasswordContainer dao={dao} />} />
+            <Route path='/account/delete-account' render={ () => <DeleteAccountContainer dao={dao} />} />
+
             <Route path='/search' render={ props => <QuestionSearch dao={dao} {...props} /> }/>
             <Route path='/browse' component={QuestionBrowse} />
             <Route path='/question/:id' component={QuestionPage} />

@@ -13,7 +13,7 @@ const algoliaIndex = client.initIndex(INDEX_NAME);
 
 
 import { Question, User } from '../shared/types';
-import { QuestionCategory } from '../shared/enums'
+import { QuestionCategory, Gender, Orientation } from '../shared/enums'
 
 /**
  * DataAccess is a singleton class that contains methods for accessing 
@@ -33,6 +33,7 @@ export class DataAccess {
   public static readonly emailAlreadyInUseErr = 'auth/email-already-in-use';
   public static readonly requiresRecentLoginErr = 'auth/requires-recent-login';
   public static readonly operationNotAllowedErr = 'auth/operation-not-allowed';
+  public static readonly tooManyRequestsErr = 'auth/too-many-requests';
 
   public static initialize = (auth: FirebaseAuthAccessor, getCredential: FirebaseCredentialFn): DataAccess => {
     if (!DataAccess.instance) {
@@ -72,9 +73,14 @@ export class DataAccess {
           resolve(null);
         } else {
           resolve({
+            email: user.email as string, // FIXME(mpingram) can this really be null?
+            emailVerified: user.emailVerified,
             displayName: user.displayName ? user.displayName : undefined,
             photoURL: user.photoURL ? user.photoURL : undefined,
-            uid: user.uid
+            uid: user.uid,
+            // FIXME(mpingram) placeholders
+            gender: Gender.PreferNoAnswer,
+            orientation: Orientation.PreferNoAnswer,
           });
         }
       });
@@ -101,6 +107,8 @@ export class DataAccess {
           case 'auth/operationNotAllowed':
             reject(DataAccess.operationNotAllowedErr);
             break;
+          case 'auth/too-many-requests':
+            reject(DataAccess.tooManyRequestsErr);
           default:
             reject(`Unhandled error:\n${JSON.stringify(err)}`);
             break;
@@ -117,11 +125,16 @@ export class DataAccess {
         if (!user) {
           reject(DataAccess.userNotLoggedInErr);
         } else {
-          // FIXME(mpingram) add continue url
           user.sendEmailVerification().then( () => {
             resolve();
           }).catch( err => {
-            reject(`Unhandled err:\n${JSON.stringify(err)}`);
+            switch(err.code){
+              case 'auth/too-many-requests':
+                reject(DataAccess.tooManyRequestsErr);
+                break;
+              default:
+                reject(`Unhandled err:\n${JSON.stringify(err)}`);
+            }
           });
         }
       });
@@ -142,19 +155,21 @@ export class DataAccess {
         }
         const cred = this.getCredential(user.email as string, password);
         user.reauthenticateAndRetrieveDataWithCredential(cred).then( () => {
-          user.delete().then( () => {
-            resolve();
-          });
+          return user.delete()
         }).catch( err => {
           switch(err.code) {
             case 'auth/wrong-password':
               reject(DataAccess.wrongPasswordErr);
               break;
+            case 'auth/too-many-requests':
+              reject(DataAccess.tooManyRequestsErr);
+              break;
             default:
-              reject(err);
-              console.error(`Unhandled error:\n${JSON.stringify(err)}`)
+              reject(`Unhandled error:\n${JSON.stringify(err)}`)
               break;
           }
+        }).then( () => {
+          resolve();
         });
       }
     });
@@ -175,9 +190,7 @@ export class DataAccess {
           }
           const cred = this.getCredential(user.email as string, oldPassword);
           user.reauthenticateAndRetrieveDataWithCredential(cred).then( () => {
-            user.updatePassword(newPassword).then( () => {
-              resolve();
-            });
+            return user.updatePassword(newPassword);
           }).catch( err => {
             switch(err.code) {
               case 'auth/wrong-password':
@@ -191,6 +204,9 @@ export class DataAccess {
               case 'auth/requires-recent-login':
                 reject(DataAccess.requiresRecentLoginErr);
                 break;
+              case 'auth/too-many-requests':
+                reject(DataAccess.tooManyRequestsErr);
+                break;
               // operation failed - unhandled reason
               // (This should never happen)
               default:
@@ -198,6 +214,8 @@ export class DataAccess {
                 reject(err);
                 break;
             }
+          }).then( () => {
+            resolve();
           });
         }
       });
@@ -219,30 +237,37 @@ export class DataAccess {
           }
           const cred = this.getCredential(user.email as string, password);
           user.reauthenticateAndRetrieveDataWithCredential(cred).then( () => {
-            user.updateEmail(newEmail).then( () => {
-              resolve();
-            }).catch( err => {
-              switch(err.code) {
-                // failed - email is invalid
-                case 'auth/invalid-email':
-                  reject(DataAccess.invalidEmailErr);
-                  break;
-                // failed - email already in use
-                case 'auth/email-already-in-use':
-                  reject(DataAccess.emailAlreadyInUseErr);
-                  break;
-                // failed - user needs to reauthenticate
-                case 'auth/requires-recent-login':
-                  reject(DataAccess.requiresRecentLoginErr);
-                  break;
-                // failed - unhandled reason
-                // (This should never happen)
-                default:
-                  console.error(`Unhandled error:\n${JSON.stringify(err)}`);
-                  reject(err);
-                  break;
-              }
-            })
+            return user.updateEmail(newEmail);
+          }).catch( err => {
+            switch(err.code) {
+              // failed - bad password
+              case 'auth/wrong-password':
+                reject(DataAccess.wrongPasswordErr);
+                break;
+              // failed - email is invalid
+              case 'auth/invalid-email':
+                reject(DataAccess.invalidEmailErr);
+                break;
+              // failed - email already in use
+              case 'auth/email-already-in-use':
+                reject(DataAccess.emailAlreadyInUseErr);
+                break;
+              // failed - user needs to reauthenticate
+              case 'auth/requires-recent-login':
+                reject(DataAccess.requiresRecentLoginErr);
+                break;
+              case 'auth/too-many-requests':
+                reject(DataAccess.tooManyRequestsErr);
+                break;
+              // failed - unhandled reason
+              // (This should never happen)
+              default:
+                console.error(`Unhandled error:\n${JSON.stringify(err)}`);
+                reject(err);
+                break;
+            }
+          }).then( () => {
+            resolve();
           });
         }
       });
@@ -267,6 +292,9 @@ export class DataAccess {
               break;
             case 'auth/user-not-found':
               reject(DataAccess.userNotFoundErr);
+              break;
+            case 'auth/too-many-requests':
+              reject(DataAccess.tooManyRequestsErr);
               break;
             default:
               console.error(`Unhandled error:\n${JSON.stringify(err)}`);
