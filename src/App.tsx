@@ -1,20 +1,5 @@
 import * as React from 'react';
-import { createStore, applyMiddleware, compose } from 'redux';
-import { Provider } from 'react-redux';
-import ReduxThunk from 'redux-thunk';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-
-// -------------------------
-// Redux Store
-// -------------------------
-import { rootReducer } from './shared/redux';
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__  || compose;
-const store = createStore(
-  rootReducer, 
-  composeEnhancers(
-    applyMiddleware(ReduxThunk)
-  )
-);
 
 const dao = DataAccess.getInstance();
 
@@ -61,9 +46,7 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   render(){
-    console.log(store.getState());
     return (
-      <Provider store={store} >
       <React.Fragment>
         <Navbar 
           user={this.state.user ? this.state.user : undefined}  
@@ -89,7 +72,6 @@ export class App extends React.Component<AppProps, AppState> {
           </Switch>
         </BrowserRouter>
       </React.Fragment>
-      </Provider>
     );
   }
 
