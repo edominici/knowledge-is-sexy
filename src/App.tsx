@@ -1,88 +1,58 @@
 import * as React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const dao = DataAccess.getInstance();
 
+import Navbar from './shared/components/navbar-container';
+import SignIn from './signin-container';
+import Account from './account/account-container';
+import ChangeEmail from './account/change-email-container';
+import ChangePassword from './account/change-password-container';
+import DeleteAccount from './account/delete-account-container';
 
-import { User } from './shared/types'; 
-
-import { Navbar } from './shared/components/navbar';
 import { Landing } from './landing';
-import { AccountContainer } from './account/account-container';
 import { QuestionPage } from './question-page';
 import { QuestionSearch } from './question-search';
 import { QuestionBrowse } from './question-browse';
 import { CategoryBrowse } from './category-browse';
 import { AskExpert } from './ask-expert';
-import { SignIn } from './signin';
-import { ChangeEmailContainer } from './account/change-email-container';
-import { ChangePasswordContainer } from './account/change-password-container';
-import { DeleteAccountContainer } from './account/delete-account-container';
+
+import { AppState } from './shared/types';
 import { DataAccess } from './shared/data-access';
+const dao = DataAccess.getInstance();
 
 interface AppProps {
-
+  isAuthenticated: boolean
 }
-interface AppState {
-  user?: User | null,
-  userSignInTransition: boolean
-}
-export class App extends React.Component<AppProps, AppState> {
-
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      userSignInTransition: true
-    }
-  }
-
-  componentDidMount() {
-    dao.getUser().then( (user) => {
-      this.setState({
-        user: user,
-        userSignInTransition: false,
-      });
-    });
-  }
-
-  render(){
-    return (
+const App: React.SFC<AppProps> = (props) => {
+  return (
+    <BrowserRouter>
       <React.Fragment>
-        <Navbar 
-          user={this.state.user ? this.state.user : undefined}  
-          signInTransition={this.state.userSignInTransition} 
-          handleSignOutClick={this.handleSignOutClick} 
-        />
-        <BrowserRouter>
-          <Switch>
-            <Route path='/' exact component={Landing} /> } />
-            <Route path='/signin' render={ () => <SignIn next='/' />} />
+      <Navbar />
+      <Switch>
+        <Route path='/' exact component={Landing} /> 
+        <Route path='/signin' render={() => <SignIn />}  />
 
-            <Route path='/account' exact render={ () => <AccountContainer dao={dao} />} />
-            <Route path='/account/change-email' render={ () => <ChangeEmailContainer dao={dao} />} />
-            <Route path='/account/change-password' render={ () => <ChangePasswordContainer dao={dao} />} />
-            <Route path='/account/delete-account' render={ () => <DeleteAccountContainer dao={dao} />} />
+        <Route path='/account' exact render={ () => props.isAuthenticated ? <Account /> : <Redirect to='/signin' /> } />
+        <Route path='/account/change-email' render={ () => props.isAuthenticated ? <ChangeEmail /> : <Redirect to='/signin' /> }/>
+        <Route path='/account/change-password' render={ () => props.isAuthenticated ? <ChangePassword /> : <Redirect to='/signin' /> } />
+        <Route path='/account/delete-account' render={ () => props.isAuthenticated ? <DeleteAccount /> : <Redirect to='/signin' />} />
 
-            <Route path='/search' render={ props => <QuestionSearch dao={dao} {...props} /> }/>
-            <Route path='/browse' component={QuestionBrowse} />
-            <Route path='/question/:id' component={QuestionPage} />
-            <Route path='/ask-expert' component={AskExpert} />
-            <Route path='/question-submitted' component={Landing} />
-            <Route path='/category' component={CategoryBrowse}/>
-          </Switch>
-        </BrowserRouter>
+        <Route path='/search' render={ props => <QuestionSearch dao={dao} {...props} /> }/>
+        <Route path='/browse' component={QuestionBrowse} />
+        <Route path='/question/:id' component={QuestionPage} />
+        <Route path='/ask-expert' component={AskExpert} />
+        <Route path='/question-submitted' component={Landing} />
+        <Route path='/category' component={CategoryBrowse}/>
+      </Switch>
       </React.Fragment>
-    );
-  }
-
-  private handleSignOutClick: React.MouseEventHandler<HTMLAnchorElement> = () => {
-    this.setState({userSignInTransition: true})
-    dao.logOut().then( () => {
-      this.setState({
-        user: null,
-        userSignInTransition: false
-      })
-    });
-  }
-
+    </BrowserRouter>
+  );
 };
+
+const mapStateToProps = (state: AppState): AppProps => {
+  return {
+    isAuthenticated: state.auth.user !== null
+  }
+}
+export default connect(mapStateToProps, null)(App);

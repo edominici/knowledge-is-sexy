@@ -1,31 +1,31 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { User } from '../../shared/types';
 
 import defaultUserlogo from '../../shared/images/baseline-account_circle-24px.svg';
 import textOnlylogo from '../../shared/images/kis-logo-textonly.svg';
 
-interface NavbarProps {
-  user?: User
-  handleSignOutClick?: React.MouseEventHandler<HTMLAnchorElement>
-  signInTransition?: boolean;
-  //handleSignInClick: React.MouseEventHandler<HTMLButtonElement>
-  //handleCreateAccountClick: React.MouseEventHandler<HTMLButtonElement>
+export interface NavbarProps {
+  user: User | null
+  onSignOutClick: React.MouseEventHandler<HTMLAnchorElement>
+  isSigningIn: boolean;
+  isSigningOut: boolean;
 }
 export const Navbar: React.SFC<NavbarProps> = props => {
   
   let navEndMarkup;
   // user is currently being signed out or signed in
-  if (props.signInTransition) {
+  if (props.isSigningIn || props.isSigningOut) {
     navEndMarkup = (
       <div className='navbar-item'>
         <div className='buttons'>
-          <a href='/signin' className='button is-loading is-primary'>
+          <Link to='/signin' className='button is-loading is-primary'>
             <strong>Sign up</strong>
-          </a>
-          <a href='/signin' className='button is-loading is-light'>
+          </Link>
+          <Link to='/signin' className='button is-loading is-light'>
             Log in
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -34,12 +34,12 @@ export const Navbar: React.SFC<NavbarProps> = props => {
     navEndMarkup = (
       <div className='navbar-item'>
         <div className='buttons'>
-          <a href='/signin' className='button is-primary'>
+          <Link to='/signin' className='button is-primary'>
             <strong>Sign up</strong>
-          </a>
-          <a href='/signin' className='button is-light'>
+          </Link>
+          <Link to='/signin' className='button is-light'>
             Log in
-          </a>
+          </Link>
         </div>
       </div>
     );
@@ -62,13 +62,13 @@ export const Navbar: React.SFC<NavbarProps> = props => {
           </div>
 
           <div className='navbar-dropdown'>
-            <a className='navbar-item' href='/account'>
+            <Link className='navbar-item' to='/account'>
               My account
-            </a>
+            </Link>
             <hr className='navbar-divider' />
             <a 
               className='navbar-item'
-              onClick={props.handleSignOutClick} 
+              onClick={props.onSignOutClick} 
             >
               Sign out
             </a>

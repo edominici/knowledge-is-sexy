@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Gender, Orientation } from '../shared/enums';
 
-interface AccountProps {
+export interface AccountProps {
   email: string
   emailVerified: boolean
   verificationEmailStatus?: 'sending' | 'sent' | 'error'

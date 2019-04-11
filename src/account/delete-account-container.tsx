@@ -1,101 +1,22 @@
-import * as React from 'react';
+import { connect } from 'react-redux';
+import { AppState } from '../shared/types';
+import { deleteAccount, resetDeleteAccountStatus } from '../shared/redux/auth';
 
-import { DataAccess } from '../shared/data-access';
+import { DeleteAccount, DeleteAccountProps} from './delete-account';
 
-import { DeleteAccount } from './delete-account';
-import { Redirect } from 'react-router';
-
-interface DeleteAccountContainerProps {
-  dao: DataAccess
+const mapStateToProps = (state: AppState): Pick<DeleteAccountProps, 'isSubmitting' | 'errMsg' | 'shouldRedirectToLanding'> => {
+  return {
+    isSubmitting: state.auth.deleteAccountStatus === 'requested',
+    shouldRedirectToLanding: state.auth.deleteAccountStatus === 'success',
+    errMsg: state.auth.deleteAccountErr,
+  }
 }
 
-interface DeleteAccountContainerState {
-  password: string
-  passwordErrMsg: string | null
-  isSubmitting: boolean
-
-  shouldRedirectToAccount?: boolean
-  shouldRedirectToLanding?: boolean
+const mapDispatchToProps = (dispatch: any): Pick<DeleteAccountProps, 'onSubmit' | 'onExit'> => {
+  return {
+    onSubmit: (password) => dispatch(deleteAccount(password)),
+    onExit: () => dispatch(resetDeleteAccountStatus())
+  }
 }
 
-export class DeleteAccountContainer extends React.PureComponent<DeleteAccountContainerProps, DeleteAccountContainerState> {
-
-  constructor(props: DeleteAccountContainerProps) {
-    super(props);
-    this.state = {
-      password: '',
-      passwordErrMsg: null,
-      isSubmitting: false
-    }
-  }
-
-  render() {
-
-    if (this.state.shouldRedirectToAccount) {
-      return <Redirect push to='/account/' />
-    } else if (this.state.shouldRedirectToLanding) {
-      return <Redirect push to='/' />
-    }
-
-    return <DeleteAccount
-      passwordValue={this.state.password}
-      onPasswordChange={this.handlePasswordChange}
-      passwordErrMsg={this.state.passwordErrMsg}
-      isSubmitting={this.state.isSubmitting}
-      onSubmitClick={this.handleSubmitClick}
-      onCancelClick={this.handleCancelClick}
-    />
-  }
-
-  private handlePasswordChange: React.ChangeEventHandler<any> = ev => {
-    this.setState({
-      password: ev.currentTarget.value
-    })
-  }
-
-  private handleCancelClick: React.MouseEventHandler<any> = ev => {
-    this.setState({
-      shouldRedirectToAccount: true
-    })
-  }
-
-  private handleSubmitClick: React.MouseEventHandler<any> = ev => {
-
-    this.setState({
-      isSubmitting: true
-    });
-
-    this.props.dao.deleteAccount(this.state.password).then( () => {
-      // success
-      this.setState({
-        isSubmitting: false,
-        shouldRedirectToLanding: true
-      });
-
-    }).catch( err => {
-      // error
-      switch(err) {
-        case DataAccess.wrongPasswordErr:
-          this.setState({
-            isSubmitting: false,
-            passwordErrMsg: 'The password is incorrect.'
-          })
-          break;
-        case DataAccess.tooManyRequestsErr:
-          this.setState({
-            isSubmitting: false,
-            passwordErrMsg: 'Too many requests. Please wait before trying again.'
-          })
-          break;
-        default:
-          this.setState({
-            isSubmitting: false,
-            passwordErrMsg: err
-          });
-          break;
-      }
-    });
-
-  }
-  
-}
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteAccount);

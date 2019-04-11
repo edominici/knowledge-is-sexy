@@ -1,15 +1,16 @@
 import * as React from 'react';
+import { Redirect, Link } from 'react-router-dom';
 
-interface DeleteAccountProps {
-  passwordValue: string
-  onPasswordChange: React.ChangeEventHandler<HTMLInputElement>
-  passwordErrMsg: string | null
-  onCancelClick: React.MouseEventHandler<HTMLButtonElement>
+export interface DeleteAccountProps {
+  errMsg: string | null
+  onExit: () => any
+  onSubmit: (password: string) => any
   isSubmitting: boolean
-  onSubmitClick: React.MouseEventHandler<HTMLButtonElement>
+  shouldRedirectToLanding: boolean
 }
 
 interface DeleteAccountState {
+  passwordValue: string
   confirmDeleteAccount: boolean
 }
 
@@ -18,11 +19,15 @@ export class DeleteAccount extends React.PureComponent<DeleteAccountProps, Delet
   constructor(props: DeleteAccountProps) {
     super(props);
     this.state = {
+      passwordValue: '',
       confirmDeleteAccount: false
     }
   }
 
   render() {
+    if (this.props.shouldRedirectToLanding) {
+      return <Redirect push to='/' />
+    }
     return (
       <React.Fragment>
 
@@ -36,6 +41,7 @@ export class DeleteAccount extends React.PureComponent<DeleteAccountProps, Delet
           </div>
         </div>
       </section>
+
 
       <section className='section'>
 
@@ -87,23 +93,26 @@ export class DeleteAccount extends React.PureComponent<DeleteAccountProps, Delet
                 className='input'
                 type='password'
                 autoComplete='current-password'
-                value={this.props.passwordValue}
-                onChange={this.props.onPasswordChange}
+                value={this.state.passwordValue}
+                onChange={this.handlePasswordChange}
               />
             </div>
-            { this.props.passwordErrMsg && (
-              <p className='help is-danger'>{this.props.passwordErrMsg}</p>
-            )}
           </div>
         </form>
+
+        { this.props.errMsg && (
+          <div className='notification is-danger'>
+            {this.props.errMsg}
+          </div>
+        )}
 
         <div className='level is-mobile'>
           <div className='level-left'>
             <div className='field'>
               <div className='control'>
-                <button onClick={this.props.onCancelClick} className='button is-medium is-info is-outlined'>
+                <Link to='/account' onClick={this.props.onExit} className='button is-medium is-info is-outlined'>
                   Cancel
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -125,6 +134,12 @@ export class DeleteAccount extends React.PureComponent<DeleteAccountProps, Delet
     );
   }
 
+  private handlePasswordChange: React.ChangeEventHandler<any> = ev => {
+    this.setState({
+      passwordValue: ev.currentTarget.value
+    });
+  }
+
   private handleConfirmChange: React.ChangeEventHandler<any> = ev => {
     this.setState({
       confirmDeleteAccount: !this.state.confirmDeleteAccount
@@ -139,7 +154,7 @@ export class DeleteAccount extends React.PureComponent<DeleteAccountProps, Delet
 
   private handleSubmitClick: React.MouseEventHandler<HTMLButtonElement> = ev => {
     if (this.state.confirmDeleteAccount) {
-      this.props.onSubmitClick(ev);
+      this.props.onSubmit(this.state.passwordValue);
     }
   }
 }
