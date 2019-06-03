@@ -1,0 +1,72 @@
+@import 'src/shared/styles/variables';
+
+.speech-bubble {
+  position: relative;
+  padding: 0.75em;
+  width: 100%;
+  min-height: 4em;
+  height: auto;
+  border-radius: 10px;
+
+  // center text
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.speech-bubble:after {
+  content: '';
+  position: absolute;
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  display: block;
+  width: 0;
+  z-index: 1;
+  margin-top: -10px;
+  right: -16px;
+}
+
+.speech-bubble-question {
+  color: $col-text-white;
+  background-color: $col-app-accent;
+  text-align: center;
+}
+.speech-bubble-question:after {
+  bottom: 10px;
+  right: -16px;
+  border-color: transparent $col-app-accent;
+  border-width: 10px 0 10px 16px;
+}
+
+.speech-bubble-answer {
+  border: 1px solid $col-app-gray-lighter;
+  color: $col-text-black;
+  background-color: $col-app-gray-lighter;
+  text-align: left;
+}
+/** 
+ * Use :after for speech bubble pointer, use :before to make a fake border
+ * around the speech bubble pointer.
+ **/
+.speech-bubble-answer:before {
+  position: absolute;
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  display: block;
+  width: 0;
+  z-index: 1;
+  margin-top: -10px;
+
+  content: '';
+  top: 20px;
+  left: -17px;
+  border-color: transparent $col-app-gray-lighter;
+  border-width: 10px 16px 10px 0;
+}
+.speech-bubble-answer:after {
+  top: 20px;
+  left: -16px;
+  //border-color: transparent $col-app-base-light;
+  border-color: transparent $col-app-gray-lighter;
+  border-width: 10px 16px 10px 0;
+}

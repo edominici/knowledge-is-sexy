@@ -1,195 +1,53 @@
-<!DOCTYPE html:5>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
 
-<head>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.bundle.min.js"> -->
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+    <!--
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,900" rel="stylesheet">
+    -->
+    <!-- Font Awesome v5.7.2 SVG icons -->
+    <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js" integrity="sha384-0pzryjIRos8mFBWMzSSZApWtPl/5++eIfzYmTgBBmXYdhvxPc+XcFEk+zJwDgWbP" crossorigin="anonymous"></script>
 
-    <!-- Latest compiled and minified CSS -->
-    <meta charset= utf-8>
+    <style>
+      html {
+        /* For some reason bulma stuck a overflow-y: scroll on my html */
+        overflow-y: auto !important;
+      }
+    </style>
 
+  </head>
+  <body class='has-navbar-fixed-top'>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root" ></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Raleway:300,900" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-
-    <!-- ALGOLIA INSTANT SEARCH CSS & JS LIBRARY -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch.js"></script>
-
-     <!-- ALGOLIA WIDGET THEME -->
-
-     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.7.1/dist/instantsearch-theme-algolia.min.css">
-    <!-- include only the Firebase features as you need -->
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-messaging.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-functions.js"></script>
-
-    <!-- initialize the SDK after all desired features are loaded -->
-    <!-- <script defer src="/__/firebase/init.js"></script> -->
-
-    <link rel="stylesheet" href="css/animate.min.css">
-
-
-
-
-</head>
-
-<body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="index.html">KIS</a>
-      <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> -->
-        <!-- <span class="navbar-toggler-icon"></span> -->
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar hamburger" ></span>
-        <span class="icon-bar hamburger"></span>
-        <span class="icon-bar hamburger"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="nav navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="index.html">#ASKQUESTIONS <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="about.html">ABOUT</a>
-            <li class="nav-item">
-              <a class="nav-link" href="resources.html">RESOURCES</a>
-            </li>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <!-- <div class="col col-lg-2">
-            </div> -->
-            <div class="col-md-auto" id="contentDiv">
-                <img class="logo animated fadeInDownBig" src="kis.png" alt="KIS logo">
-                <hr class="topRule">
-                <h2>Knowledge is sexy.</h2>
-                <hr class="bottomRule">
-                <p class="askQuestion"> Ask any sex or sexual health questions here.</p>
-                <div class="form-box">
-                    <form action="/" method="POST">
-                        <textarea type="text" id="questionBox" placeholder="#AskQuestion"></textarea> <br>
-                        <button type="button" class="btn btn-outline-secondary" id="submitButton"><a class="button-href" href ="askquestions.html">SUBMIT</a></button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-    <script type='text/javascript'>
-
-    // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBLXtC4nDv-yxymc0nI2uc3ugTUi4PvUco",
-    authDomain: "knowledgeispower-560e2.firebaseapp.com",
-    databaseURL: "https://knowledgeispower-560e2.firebaseio.com",
-    projectId: "knowledgeispower-560e2",
-    storageBucket: "knowledgeispower-560e2.appspot.com",
-    messagingSenderId: "349167488894"
-  };
-
-    firebase.initializeApp(config);
-
-    // Get a reference to the database service
-    var dataRef = firebase.database();
-
-$("#submitButton").on("click", function (event) {
-        console.log('submit')
-
-
-            event.preventDefault();
-
-            var questionSearch = $("#questionBox").val().trim();
-
-            var newEntry = {
-              search: questionSearch,
-              dataAdded: firebase.database.ServerValue.TIMESTAMP
-            }
-
-            console.log(newEntry);
-
-            dataRef.ref().push(newEntry);
-
-            //Logs everything to console
-            console.log(newEntry.search);
-
-            $("#questionBox").val("");
-
-    dataRef.ref().on("child_added", function (childSnapshot) {
-
-         console.log(childSnapshot.val());
-
-        var questionSearch = childSnapshot.val().search;
-
-        console.log(questionSearch);
-
-        $("#card-question").append(questionSearch);
-
-    });
-
-    window.location = 'askquestions.html';
-
-    });
-
-
-const search = instantsearch ({
-        appId: '58946AMDV8',
-        apiKey: '331c73d68fc3d1064f3f7e1bc34b5348',
-        indexName: 'questions.answers_db',
-        //You can synchronise the current search with the browser url. It provides two benefits: Working back/next browser buttons & copy and share the current search url
-        routing: true
-      });
-
-
-    // initialize SearchBox
-    search.addWidget(
-      instantsearch.widgets.searchBox({
-        container: '#questionBox',
-        placeholder: 'Search by answer or keyword'
-      })
-    );
-
-    console.log('search box');
-
-    search.start();
-
-  </script>
-
- <!-- ALGOLIA SEARCH LIBRARY -->
- <script src="https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/algoliasearch/3.26.0/algoliasearch.jquery.min.js"></script>
- <!-- FIREBASE JS -->
- <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
-
- <!-- MAIN JS -->
- <!-- <script src="js/main.js"></script> -->
-
-</body>
-
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
 </html>

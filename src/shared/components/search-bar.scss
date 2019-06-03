@@ -1,0 +1,32 @@
+@import '../../shared/styles/variables';
+
+.search-bar-container {
+
+  width: 100%;
+  height: 40px;
+  line-height: 1.25em;
+
+  margin: 0 auto;
+  border: 1px solid $col-app-gray-dark;
+  border-radius: 10px;
+  box-shadow: $box-shadow-z2;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.search-bar {
+  font-size: 1em;
+  padding: 6px;
+  border-radius: 10px;
+  border: none;
+  flex: 1 0 auto;
+  
+  ::placeholder {
+    color: $col-text-gray
+  }
+}
+
+.search-bar-submit-button {
+  flex: 0 0 40px;
+}

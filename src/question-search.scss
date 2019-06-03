@@ -1,0 +1,67 @@
+@import 'src/shared/styles/variables';
+
+$question-search-header-height: 10vh;
+
+.question-list-scroll-container {
+  background-color: $col-app-neutral;
+  width: 100%;
+  height: 100vh - $question-search-header-height;
+}
+.question-list {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.more-questions-button {
+  padding: 0.3em;
+  font-size: 120%;
+  border: 2px solid $col-app-accent;
+  color: $col-app-accent;
+  border-radius: 10px;
+  background: none;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.question-list-footer {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  background-color: $col-app-gray-lightest;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.question-list-footer .info-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  margin: 0 0.5em;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 4px solid $col-app-base;
+  color: $col-app-base;
+  font-weight: bold;
+  font-size: 200%;
+  line-height: 30px;
+}
+
+.question-list-footer .header-text {
+  font-size: 115%;
+  text-align: center;
+  font-weight: bold;
+  color: $col-app-base-dark;
+}
+
+.ask-expert-button {
+  padding: 6px;
+  width: 60%;
+  margin-bottom: 10px;
+}

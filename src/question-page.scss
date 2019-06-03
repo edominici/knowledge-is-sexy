@@ -1,0 +1,56 @@
+@import 'src/shared/styles/variables';
+
+$question-container-height: 20vh;
+
+.landing-page {
+  background-color: $col-app-base;
+}
+.question-container {
+  height: $question-container-height;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+
+}
+.question {
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.answer-list-container {
+  width: 100%;
+  height: auto;
+  overflow-y: scroll; 
+}
+
+.answer-list {
+  width: 100%;
+  height: auto;
+}
+
+.answer {
+  max-width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 1em 0.5em;
+}
+
+.user-icon-asker {
+  fill: $col-app-accent-light;
+  order: 1;
+  margin-left: 15px;
+}
+
+.user-icon-answerer {
+  fill: $col-app-base;
+  margin-right: 15px;
+}
+
