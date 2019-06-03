@@ -1,3 +1,11 @@
+## Knowledge is Sexy
+
+Knowledge is Sexy is a web app that provides validated answers from doctors and public health researchers to sex-ed questions submitted by users.
+
+![Screenshot of Knowledge is Sexy](kis-screenshot-mobile.png)
+
+## Development Guide
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
