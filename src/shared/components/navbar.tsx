@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import { User } from '../../shared/types';
 
-import defaultUserlogo from '../../shared/images/baseline-account_circle-24px.svg';
 import textOnlylogo from '../../shared/images/kis-logo-textonly.svg';
 
 export interface NavbarProps {
@@ -12,108 +11,126 @@ export interface NavbarProps {
   isSigningIn: boolean;
   isSigningOut: boolean;
 }
-export const Navbar: React.SFC<NavbarProps> = props => {
-  
-  let navEndMarkup;
-  // user is currently being signed out or signed in
-  if (props.isSigningIn || props.isSigningOut) {
-    navEndMarkup = (
-      <div className='navbar-item'>
-        <div className='buttons'>
-          <Link to='/signin' className='button is-loading is-primary'>
-            <strong>Sign up</strong>
-          </Link>
-          <Link to='/signin' className='button is-loading is-light'>
-            Log in
-          </Link>
+
+export interface NavbarState {
+  dropdownActive: boolean;
+}
+
+export class Navbar extends React.PureComponent<NavbarProps, NavbarState> {
+
+  constructor(props: NavbarProps) {
+    super(props);
+    this.state = {
+      dropdownActive: false
+    }
+  }
+
+  public render() {
+    let navEndMarkup;
+    // user is currently being signed out or signed in
+    if (this.props.isSigningIn || this.props.isSigningOut) {
+      navEndMarkup = (
+        <div className='navbar-item'>
+          <div className='buttons'>
+            <Link to='/signin' className='button is-loading is-primary'>
+              <strong>Sign up</strong>
+            </Link>
+            <Link to='/signin' className='button is-loading is-light'>
+              Log in
+            </Link>
+          </div>
         </div>
-      </div>
-    );
-  // user is not signed in
-  } else if (!props.user) {
-    navEndMarkup = (
-      <div className='navbar-item'>
-        <div className='buttons'>
-          <Link to='/signin' className='button is-primary'>
-            <strong>Sign up</strong>
-          </Link>
-          <Link to='/signin' className='button is-light'>
-            Log in
-          </Link>
+      );
+    // user is not signed in
+    } else if (!this.props.user) {
+      navEndMarkup = (
+        <div className='navbar-item'>
+          <div className='buttons'>
+            <Link to='/signin' className='button is-primary'>
+              <strong>Sign up</strong>
+            </Link>
+            <Link to='/signin' className='button is-light'>
+              Log in
+            </Link>
+          </div>
         </div>
-      </div>
-    );
-  // user is signed in
-  } else {
-    navEndMarkup = (
-      <div className='navbar-menu'>
+      );
+    // user is signed in
+    } else {
+      navEndMarkup = (
         <div className='navbar-item has-dropdown is-hoverable'>
 
           <div className='navbar-link'>
-            <figure style={{margin: '0 0.25em'}} className='image is-rounded' >
-              <img 
-                style={{width: '32px', height: '32px'}}
-                src={props.user.photoURL || defaultUserlogo} 
-                alt='User profile picture' 
-              />
-            </figure>
-
-            {props.user.displayName}
+              <span className='icon'><i className='fas fa-user-circle' /></span>
+              <span style={{verticalAlign: 'text-bottom'}}>{this.props.user.displayName}</span>
           </div>
 
           <div className='navbar-dropdown'>
             <Link className='navbar-item' to='/account'>
-              My account
+              <span className='icon'><i className='fas fa-cog' /></span>
+              <span style={{verticalAlign: 'text-bottom'}}>My account</span>
             </Link>
             <hr className='navbar-divider' />
             <a 
               className='navbar-item'
-              onClick={props.onSignOutClick} 
+              onClick={this.props.onSignOutClick} 
             >
-              Sign out
+              <span className='icon'><i className='fas fa-sign-out-alt' /></span>
+              <span style={{verticalAlign: 'text-bottom'}}>Sign Out</span>
             </a>
           </div>
 
         </div>
-      </div>
-    );
+      );
+    }
+
+    return (
+      <nav className='navbar is-fixed-top is-gray' role='navigation' aria-label='main navigation'>
+        <div className='navbar-brand'>
+          <a className='navbar-item' href='/'>
+            <img src={textOnlylogo} alt='Knowledge is Sexy logo'/>
+          </a>
+
+          <a 
+            role='button' 
+            onClick={this.handleBurgerClick}
+            className={`navbar-burger burger ${this.state.dropdownActive ? 'is-active' : ''}`} 
+            aria-label='menu' 
+            aria-expanded='false' 
+            data-target='navbarMenu'
+          >
+            <span aria-hidden='true'></span>
+            <span aria-hidden='true'></span>
+            <span aria-hidden='true'></span>
+          </a>
+
+        </div>
+
+        <div 
+          id='navbarMenu' 
+          className={`navbar-menu ${this.state.dropdownActive ? 'is-active' : ''}`}
+        >
+          <div className='navbar-start'>
+            <a className='navbar-item' href='/'>
+              Home
+            </a>
+            <a className='navbar-item' href='/about'>
+              About
+            </a>
+          </div>
+
+          <div className='navbar-end'>
+            {navEndMarkup}
+          </div>
+        </div>
+      </nav>
+    )
   }
 
-  return (
-    <nav className='navbar is-fixed-top is-gray' role='navigation' aria-label='main navigation'>
-      <div className='navbar-brand'>
-        <a className='navbar-item' href='/'>
-          <img src={textOnlylogo} alt='Knowledge is Sexy logo'/>
-        </a>
+  private handleBurgerClick: React.MouseEventHandler<HTMLAnchorElement> = ev => {
+    this.setState({
+      dropdownActive: !this.state.dropdownActive
+    });
+  }
 
-        <a 
-          role='button' 
-          className='navbar-burger burger' 
-          aria-label='menu' 
-          aria-expanded='false' 
-          data-target='navbarMenu'
-        >
-          <span aria-hidden='true'></span>
-          <span aria-hidden='true'></span>
-          <span aria-hidden='true'></span>
-        </a>
-
-      </div>
-
-      <div id='navbarMenu' className='navbar-menu'>
-        <div className='navbar-start'>
-          <a className='navbar-item' href='/'>
-            Home
-          </a>
-          <a className='navbar-item' href='/about'>
-            About
-          </a>
-        </div>
-
-        <div className='navbar-end'>
-          {navEndMarkup}
-        </div>
-      </div>
-    </nav>
-  )
 };

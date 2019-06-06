@@ -37,13 +37,12 @@ export class Landing extends React.PureComponent<LandingProps, LandingState> {
     } 
 
     return (
-      <section className='hero is-fullheight-with-navbar has-text-centered is-primary is-bold'>
+      <section className='hero is-fullheight-with-navbar is-mobile has-text-centered is-primary is-bold'>
 
         <div className='hero-body'>
           <div className='container'>
 
             {/*KIS title*/}
-            {/*FIXME(mpingram) correct desktop-is-x / mobile-is-x once you get internet*/}
             <h1 className='title is-3 has-text-light landing-title'>
               Knowledge Is&nbsp;<span className='has-text-info'>Sexy.</span>
             </h1>
